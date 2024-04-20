@@ -28,6 +28,10 @@
 			link: '/',
 		},
 		{
+			name: 'Info',
+			link: '/info',
+		},
+		{
 			name: 'Inscription',
 			link: '/register',
 		},
