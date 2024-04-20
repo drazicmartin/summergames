@@ -10,7 +10,7 @@
 </h4>
 {/if}
 
-<form method="POST" action="?/login">
+<form method="POST" action="?/register">
     <p class="mb-4">Please login to your account</p>
     <!--Username input-->
     <div class="relative mb-4 border-solid">
