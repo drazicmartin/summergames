@@ -8,7 +8,16 @@ name: summergames
 version: "3.8"
 
 services:
-  front-app:
+  nginx:
+    nginx:
+    build: nginx/
+    image: nginx:latest
+    depends_on:
+      - db
+      - summergames-front
+    ports:
+        - 80:80
+  summergames-front:
     build: ../front/
     image: summergames-front:latest
     user: "node"
@@ -19,8 +28,8 @@ services:
       TZ: 'Europe/Paris'
       PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
     restart: unless-stopped
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
     # networks:
     #   - the-network
   studio:
