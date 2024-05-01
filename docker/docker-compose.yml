@@ -14,10 +14,10 @@ services:
     user: "node"
     environment:
       # Internal server error messages will not send stacktrace to the browser in production
-      - NODE_ENV: 'production'
+      NODE_ENV: 'production'
       # Sets the timezone of the containers OS
-      - TZ: 'Europe/Paris'
-      - PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
+      TZ: 'Europe/Paris'
+      PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
     restart: unless-stopped
     ports:
       - 3000:3000
