@@ -3,10 +3,13 @@
 	import "../app.pcss";
     import '../styles.css'
     import { invalidate } from '$app/navigation'
+	import { Toast, initializeStores } from '@skeletonlabs/skeleton';
     import { onMount } from 'svelte'
 	import FloatingNavbar from "$lib/components/ui/FloatingNavbar/FloatingNavbar.svelte";
 
     export let data
+
+	initializeStores();
 
     let { supabase, session } = data
     $: ({ supabase, session } = data)
@@ -31,22 +34,30 @@
 			name: 'Info',
 			link: '/info',
 		},
-		{
-			name: 'Inscription',
-			link: '/register',
-		},
 		// {
 		// 	name: 'Connection',
 		// 	link: '/',
 		// },
 	];
+
+	if (!data?.session) {
+		navItems.push({
+			name: 'Inscription',
+			link: '/register',
+		})
+	}
+
+	let is_logged: boolean;
+	$: (is_logged = session ? true : false)
 </script>
+
+<Toast />
 
 <svelte:head>
 	<title>Summer Games</title>
 </svelte:head>
 
 <div class="relative w-full">
-	<FloatingNavbar {navItems} />
+	<FloatingNavbar {navItems} {is_logged} />
 </div>
 <slot></slot>

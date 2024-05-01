@@ -8,6 +8,7 @@
 		link: string
 	}[];
 	export let className: string | undefined = undefined;
+    export let is_logged: boolean = false;
 
 	// const { scrollYProgress } = useScroll();
 	const { scrollYProgress } = useViewportScroll();
@@ -45,19 +46,26 @@
                 >
                     <span>{navItem.name}</span>
                     <span
-                        class="absolute inset-x-0 -bottom-px mx-auto h-px w-1/2 bg-gradient-to-r from-transparent via-blue-500 to-transparent"
+                        class="absolute inset-x-0 text-lg -bottom-px mx-auto h-px w-1/2 bg-gradient-to-r from-transparent via-blue-500 to-transparent"
                     />
                 </button>
             {:else}
                 <a
                     href={navItem.link}
                     class={cn(
-                        "relative rounded-full border border-neutral-200 px-4 py-2 text-sm font-medium text-black dark:border-white/[0.2] dark:text-white"
+                        "relative rounded-full border border-neutral-200 px-4 py-2 text-lg font-medium text-black dark:border-white/[0.2] dark:text-white"
                     )}
                 >
                     {navItem.name}
                 </a>
             {/if}
         {/each}
+        {#if is_logged}
+            <form method="post" action="/account?/signout">
+                <button class="relative bg-white rounded-full border border-neutral-200 px-4 py-2 text-lg font-medium text-black dark:border-white/[0.2] dark:text-white">
+                    Déconnexion
+                </button>
+            </form>
+        {/if}
     </div>
 </AnimatePresence>
