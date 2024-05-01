@@ -12,7 +12,7 @@ services:
     build: ../nginx
     image: nginx:latest
     depends_on:
-      - db
+      - kong
       - summergames-front
     ports:
         - 80:80
@@ -26,6 +26,7 @@ services:
       # Sets the timezone of the containers OS
       TZ: 'Europe/Paris'
       PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
+      ORIGIN: summerg-games.fr
     restart: unless-stopped
     # ports:
     #   - 3000:3000
