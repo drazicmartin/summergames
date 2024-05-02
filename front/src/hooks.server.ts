@@ -7,8 +7,6 @@ import fs from "fs";
 
 const SUPABASE_ANON_KEY = process.env['PUBLIC_SUPABASE_ANON_KEY'] ?? PUBLIC_SUPABASE_ANON_KEY
 
-console.log(SUPABASE_ANON_KEY);
-
 // detect if we're running inside docker and set the backend accordingly
 const supabase_url = fs.existsSync("/.dockerenv")
   ? "http://supabase-kong:8000" // docker-to-docker
