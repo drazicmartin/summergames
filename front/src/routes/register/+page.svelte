@@ -29,7 +29,11 @@
 
 <div class="mt-28 flex justify-center items-center">
     <div class="w-4/5">
-        <div class="text-3xl text-center">Actuellement <span class="text text-red-500">{data.nb_registered}</span> inscrit{data.nb_registered > 1 ? 's' : ''} ! <span class="text-xs">(c'est toi le prochain ?)</span></div>
+        <div class="text-3xl text-center">Actuellement <span class="text text-red-500">
+            {data.nb_registered}</span> inscrit{data.nb_registered > 1 ? 's' : ''} ! 
+            <br>
+            <span class="text-xs">(c'est toi le prochain ?)</span>
+        </div>
         <form action="?/register" method="post">
             
             <span>Création d'un compte</span>

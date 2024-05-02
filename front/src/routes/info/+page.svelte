@@ -57,7 +57,7 @@
                         On s'occupe (presque) de tout, achats de l'équipement pour les activités, des boissons, des repas. Vous n'avez rien a apporter à ce niveau là. En échange on vous demande une contribution de 30€. Le but est simplement d'organiser un weekend sympa entre amis ! <br><br>
                         Vous devrez cependant venir avec votre matos de camping, tentes, matelas, sacs de couchage, (lampe frontale ?), et tout autre équipement nécessaire pour assurer votre confort pendant votre séjour en plein air.
                         <br>
-                        Rendez-vous le vendredi <b>30 août</b> à partir de <b>16h</b> au dimanche <b>1 septembre</b> après-midi à Lieurey, 61 impasse des Croix bigeolles 27560. (En normandie) 
+                        Rendez-vous le vendredi <b>30 août</b> à partir de <b>16h</b> jusqu'au dimanche <b>1 septembre</b> après-midi à Lieurey, 61 impasse des Croix bigeolles 27560. (En normandie) 
                     </p>
                 </svelte:fragment>
             </AccordionItem>
