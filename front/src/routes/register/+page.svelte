@@ -82,7 +82,7 @@
 
             <label class="flex items-center space-x-2">
                 <input class="checkbox" type="checkbox" required/>
-                <p class="text-red-500 text-xs">J'accepte de payer la somme de 30€</p>
+                <p class="text-red-500 text-xs">J'accepte de payer la somme de 30€ (Lydia au 0781044869, ou en espèce le jour J)</p>
             </label>
 
             <div class="flex justify-center mt-5 mb-10">

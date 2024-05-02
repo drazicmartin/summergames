@@ -24,9 +24,9 @@
                 <svelte:fragment slot="content">
                     <p class="text-justify">
                         C'est un événement amusant et compétitif entre amis sur un weekend !<br>
-                        L'idée général c'est que <b>deux</b> équipe s'affronte en jouant à des Jeux/Activités que l'on a prévu.
-                        À la fin du weekend l'équipe avec le plus de point remporte le titre de <b>Vainqueur des Summer Games !</b> <br><br>
-                        À coté de la compétition, vous avez également jeux que vous pouvez faire à n'importe quel moment.
+                        L'idée général c'est que <b>deux</b> équipes s'affrontent en jouant à des Jeux/Activités que l'on a organisés.
+                        À la fin du weekend, l'équipe avec le plus de points remporte le titre de <b>Vainqueur des Summer Games !</b> <br><br>
+                        En plus de participer à la compétition, vous aurez également la possibilité de jouer à d'autres jeux en libre services à tout moment.
                     </p>
                 </svelte:fragment>
             </AccordionItem>
@@ -39,8 +39,8 @@
                 <svelte:fragment slot="summary">à propos des jeux</svelte:fragment>
                 <svelte:fragment slot="content">
                     <p class="text-justify">
-                        Pour les jeux on essais de diversifier au maximum entre jeux physiques, jeux stratégiques et jeux créatifs. <br><br>
-                        Certains jeux seront inédits, mais d'autres seront issus de l'édition précédente. Pour les nous summerien et summuerienne, nous préférons ne pas donner de détails sur les jeux pour que vous ayez la surprise.
+                        La compétition sera composée de jeux physiques, stratégiques et créatifs. <br><br>
+                        Certains jeux seront issus de l'édition précédente mais d'autre seront inédits ! Pour les nouveaux participants, nous préférons ne pas donner de détails sur les jeux pour que vous ayez la surprise.
                     </p>
                 </svelte:fragment>
             </AccordionItem>
@@ -54,8 +54,10 @@
                 <svelte:fragment slot="summary">L'organisation</svelte:fragment>
                 <svelte:fragment slot="content">
                     <p class="text-justify">
-                        On s'occupe presque de tout, achat de l'équipement, des boissons, des repas. Vous n'avez rien a apporter à ce niveau là, en échange on vous demande une contribution de 30€. Le but n'est absolument pas de faire du profit, simplement d'organiser un weekend sympa entre amis ! <br><br>
+                        On s'occupe (presque) de tout, achats de l'équipement pour les activités, des boissons, des repas. Vous n'avez rien a apporter à ce niveau là. En échange on vous demande une contribution de 30€. Le but est simplement d'organiser un weekend sympa entre amis ! <br><br>
                         Vous devrez cependant venir avec votre matos de camping, tentes, matelas, sacs de couchage, (lampe frontale ?), et tout autre équipement nécessaire pour assurer votre confort pendant votre séjour en plein air.
+                        <br>
+                        Rendez-vous le vendredi <b>30 août</b> à partir de <b>16h</b> au dimanche <b>1 septembre</b> après-midi à Lieurey, 61 impasse des Croix bigeolles 27560. (En normandie) 
                     </p>
                 </svelte:fragment>
             </AccordionItem>
@@ -70,7 +72,7 @@
                     <p class="text-justify">
                         Pour rendre les Summer Games possible nous vous demandons un participation financière de <b>30€</b>.<br><br>
                         Même si on aura prévu la plus par des choses à l'avance, certaine resterons à faire le jour J. Tel que l'installation des jeux, la préparation de la nourriture, un peu de rangement, de la logistique, etc... <br><br>
-                        À la dernière édition, nous avions eu un peu de mal à trouver des volontaires, nous comptons sur vous pour vous proposer spontanément afin de nous aider. On compte sur vous =D 
+                        Votre aide est essentiel pour que ce week-end soit un succès !
                     </p>
                 </svelte:fragment>
             </AccordionItem>
