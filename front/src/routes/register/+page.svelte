@@ -72,7 +72,7 @@
 
             <br>
 
-            <span>Un message, une idée à nous passer ?</span>
+            <span>Un message, une idée, un jeu à nous proposer ?</span>
             <label class="label">
                 <input name="message" class="flex input text-black justify-center" title="extra" type="text" placeholder="..." value={form?.msg ?? ''} />
             </label>
