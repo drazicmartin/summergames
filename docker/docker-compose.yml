@@ -9,13 +9,17 @@ version: "3.8"
 
 services:
   nginx:
-    build: ../nginx
-    image: nginx:latest
+    image: docker.io/jc21/nginx-proxy-manager:latest
     depends_on:
       - kong
       - summergames-front
     ports:
-        - 80:80
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - nginx-data:/data
+      - nginx-data:/etc/letsencrypt
   summergames-front:
     build: ../front/
     image: summergames-front:latest
@@ -431,3 +435,4 @@ services:
 
 volumes:
   db-config:
+  nginx-data:
