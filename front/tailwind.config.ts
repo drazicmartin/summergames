@@ -70,6 +70,7 @@ module.exports = {
 		forms,
 		skeleton({
 			themes: { preset: [ "skeleton" ] }
-		})
+		}),
+		require('daisyui'),
 	]
 };
