@@ -4,6 +4,7 @@ import type { Config } from 'tailwindcss';
 // 1. Import the Skeleton plugin
 import { skeleton } from '@skeletonlabs/tw-plugin';
 import forms from '@tailwindcss/forms';
+import { CustomSkeletonTheme } from './custom-skeleton-theme';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -69,8 +70,16 @@ module.exports = {
 	plugins: [
 		forms,
 		skeleton({
-			themes: { preset: [ "skeleton" ] }
+			themes: {
+				custom: [
+					CustomSkeletonTheme
+				]
+			}
 		}),
 		require('daisyui'),
-	]
+	],
+
+	daisyui: {
+		themes: ["light", "dark", "night"],
+	},
 };
