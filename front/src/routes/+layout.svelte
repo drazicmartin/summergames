@@ -3,13 +3,23 @@
 	import "../app.pcss";
     import '../styles.css'
     import { invalidate } from '$app/navigation'
-	import { Toast, initializeStores } from '@skeletonlabs/skeleton';
+	import { Toast, Modal, initializeStores } from '@skeletonlabs/skeleton';
     import { onMount } from 'svelte'
 	import FloatingNavbar from "$lib/components/ui/FloatingNavbar/FloatingNavbar.svelte";
+	import { page } from '$app/stores';
+	initializeStores();
 
     export let data
+	
+	let currentPath: string = '';
+	let isGamePage = false;
 
-	initializeStores();
+	// Subscribe to the $page store
+	$: currentPath = $page?.url?.pathname || '';
+	
+	// Check for '/game' in the URL when the component is mounted or the URL changes
+	$: isGamePage = currentPath.includes('/game');
+	
 
     let { supabase, session } = data
     $: ({ supabase, session } = data)
@@ -34,10 +44,10 @@
 			name: 'Info',
 			link: '/info',
 		},
-		// {
-		// 	name: 'Connection',
-		// 	link: '/',
-		// },
+		{
+			name: 'Killer',
+			link: '/game',
+		},
 	];
 
 	if (!data?.session) {
@@ -52,12 +62,15 @@
 </script>
 
 <Toast />
+<Modal />
 
 <svelte:head>
 	<title>Summer Games</title>
 </svelte:head>
 
+{#if !isGamePage}
 <div class="relative w-full">
 	<FloatingNavbar {navItems} {is_logged} />
 </div>
-<slot></slot>
+{/if}
+<slot/>

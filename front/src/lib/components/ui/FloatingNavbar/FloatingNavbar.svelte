@@ -63,7 +63,7 @@
         {#if is_logged}
             <form method="post" action="/account?/signout">
                 <button class="relative bg-white rounded-full border border-neutral-200 px-4 py-2 text-lg font-medium text-black dark:border-white/[0.2] dark:text-white">
-                    Déconnexion
+                    logout
                 </button>
             </form>
         {/if}
