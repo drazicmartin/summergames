@@ -21,6 +21,6 @@ export const actions = {
 
     console.log("Log in success")
 
-    throw redirect(303, "/game");
+    // throw redirect(303, "/game");
   },
 }
