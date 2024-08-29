@@ -3,8 +3,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 # Pre-generate the .svelte-kit folder
-RUN npx svelte-kit sync
 COPY . .
+RUN npx svelte-kit sync
 RUN npm run build
 RUN ls -l /app
 RUN npm prune --production
