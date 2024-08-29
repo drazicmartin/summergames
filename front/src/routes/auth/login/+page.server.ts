@@ -19,6 +19,8 @@ export const actions = {
       return fail(500, { message: 'Server error. Try again later.', success: false, email })
     }
 
-    throw redirect(302, "/game");
+    console.log("Log in success")
+
+    throw redirect(303, "/game");
   },
 }
