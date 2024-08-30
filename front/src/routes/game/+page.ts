@@ -8,9 +8,10 @@ async function fetchCreatedGames(supabase, session){
         .eq("user_id", session.user.id);
     if (error) {
         console.log("error in fetchCreatedGames")
+        console.log(error);
         return error;
     } else {
-      console.log(data)
+        console.log(data)
         return data;
     }
 };
@@ -23,6 +24,7 @@ async function  fetchPlayers(supabase, user_id){
     .eq("user_id", user_id);
     if (error) {
         console.log("error in fetchPlayers")
+        console.log(error);
         return error;
     } else {
         console.log(data)
