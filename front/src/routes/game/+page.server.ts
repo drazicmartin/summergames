@@ -32,20 +32,21 @@ async function  fetchPlayers(supabase, user_id){
     }
 }
 
-export const load = async ({ parent }) => {
-  const { supabase, session } = await parent()
+/** @type {import('./$types').PageLoad} */
+export async function load({ params, locals: { supabase, safeGetSession } }) {  
+  let session = (await safeGetSession()).session;
 
-  console.log("in load of game")
-  
   if (!session) {
     throw redirect(302, '/auth/login');
   }
-
-  console.log(session)
+  
+  // Fetch data if the user is authenticated
+  const created_games = await fetchCreatedGames(supabase, session);
+  const players = await fetchPlayers(supabase, session.user.id);
 
   return {
     user: session.user,
-    created_games: await fetchCreatedGames(supabase, session),
-    players: await fetchPlayers(supabase, session.user.id),
-  }
+    created_games,
+    players,
+  };
 }

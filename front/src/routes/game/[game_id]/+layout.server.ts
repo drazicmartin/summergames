@@ -28,8 +28,8 @@ async function fetchSelfPlayer(supabase: SupabaseClient, user_id: string, game_i
     }
 }
 
-export const load = async ({ parent, params }) => {
-  const { supabase, session } = await parent()
+export const load = async ({ parent, params, locals: { supabase, safeGetSession} }) => {
+  let session = (await safeGetSession()).session;
 
   let game = await fetchGame(supabase, params.game_id)
   
