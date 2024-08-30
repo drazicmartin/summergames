@@ -11,7 +11,6 @@ async function fetchCreatedGames(supabase, session){
         console.log(error);
         return error;
     } else {
-        console.log(data)
         return data;
     }
 };
@@ -27,7 +26,6 @@ async function  fetchPlayers(supabase, user_id){
         console.log(error);
         return error;
     } else {
-        console.log(data)
         return data;
     }
 }
