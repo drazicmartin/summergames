@@ -15,9 +15,6 @@ export const actions = {
       password
     })
 
-    console.log(data)
-    console.log(error)
-
     if (error) {
       return fail(500, { message: 'Server error. Try again later.', success: false, email })
     }
