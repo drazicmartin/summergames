@@ -7,8 +7,10 @@ async function fetchCreatedGames(supabase, session){
         .select("*")
         .eq("user_id", session.user.id);
     if (error) {
+        console.log("error in fetchCreatedGames")
         return error;
     } else {
+      console.log(data)
         return data;
     }
 };
@@ -20,8 +22,10 @@ async function  fetchPlayers(supabase, user_id){
     `)
     .eq("user_id", user_id);
     if (error) {
+        console.log("error in fetchPlayers")
         return error;
     } else {
+        console.log(data)
         return data;
     }
 }
@@ -29,11 +33,13 @@ async function  fetchPlayers(supabase, user_id){
 export const load = async ({ parent }) => {
   const { supabase, session } = await parent()
 
-  console.log(session);
+  console.log("in load of game")
   
   if (!session) {
     throw redirect(302, '/auth/login');
   }
+
+  console.log(session)
 
   return {
     user: session.user,
