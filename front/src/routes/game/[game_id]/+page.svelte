@@ -22,8 +22,6 @@
     let mission_1;
     $: mission_1 = data.game.state?.loop[data.user.id];
 
-    console.log(data.game.state?.loop[data.user.id])
-
     let password_value: string;
 
     const modal: ModalSettings = {

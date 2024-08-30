@@ -7,7 +7,7 @@ import forms from '@tailwindcss/forms';
 import { CustomSkeletonTheme } from './custom-skeleton-theme';
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+const config = {
 	darkMode: 'class',
 	content: [
 		'./src/**/*.{html,js,svelte,ts}',
@@ -69,16 +69,17 @@ module.exports = {
 
 	plugins: [
 		forms,
+		// skeleton({
+		// 	themes: {
+		// 		custom: [
+		// 			CustomSkeletonTheme
+		// 		]
+		// 	}
+		// }),
 		skeleton({
-			themes: {
-				custom: [
-					CustomSkeletonTheme
-				]
-			}
-		}),
+			themes: { preset: [ "skeleton" ] }
+		})
 	],
-
-	daisyui: {
-		themes: ["light", "dark", "night"],
-	},
 };
+
+export default config;

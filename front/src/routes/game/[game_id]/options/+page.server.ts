@@ -2,7 +2,6 @@
 import { fail } from '@sveltejs/kit'
 import { redirect } from '@sveltejs/kit'
 import { InitGameState, ShuffleGameState, addScore, fetchGameState, findKillerIdFromKilledId, killLogic, updateGameState } from '$lib/Games.ts';
-import { user } from '$lib/UserStore.js';
 
 export const actions = {
     delete_game: async ({ request, locals: { supabase }, params }) => {
@@ -26,8 +25,8 @@ export const actions = {
     
         throw redirect(302, "/");
     },
-    change_password: async ({ request, locals: { supabase, getSession }, params }) => {
-        let session = await getSession();
+    change_password: async ({ request, locals: { supabase, safeGetSession }, params }) => {
+        let session = await safeGetSession();
 
         const game_id = params.game_id as unknown as number;
 
@@ -75,8 +74,8 @@ export const actions = {
             message: "Successfully changed password"
         }
     },
-    change_name: async ({ request, locals: { supabase, getSession }, params }) => {
-        let session = await getSession();
+    change_name: async ({ request, locals: { supabase, safeGetSession }, params }) => {
+        let session = await safeGetSession();
 
         const game_id = params.game_id as unknown as number;
 
@@ -107,8 +106,8 @@ export const actions = {
             message: "Successfully changed name"
         }
     },
-    delete_user: async ({ request, locals: { supabase, getSession }, params }) => {
-        let session = await getSession();
+    delete_user: async ({ request, locals: { supabase, safeGetSession }, params }) => {
+        let session = await safeGetSession();
 
         const game_id = params.game_id as unknown as number;
 
@@ -172,15 +171,19 @@ export const actions = {
     reset_game_state: async ({ request, locals: { supabase }, params }) => {
         const game_id = params.game_id as unknown as number;
 
+        console.log("Game Reset")
+
         return InitGameState(supabase, game_id);
     },
     shuffle_game_state: async ({ request, locals: { supabase }, params }) => {
         const game_id = params.game_id as unknown as number;
 
+        console.log("Game Shuffled")
+
         return ShuffleGameState(supabase, game_id);
     },
-    quit_game: async ({ request, locals: { supabase, getSession }, params }) => {
-        let session = await getSession();
+    quit_game: async ({ request, locals: { supabase, safeGetSession }, params }) => {
+        let session = await safeGetSession();
         const game_id = params.game_id as unknown as number;
 
         const {data, error} = await supabase
@@ -220,6 +223,7 @@ export const actions = {
     },
     start_game: async ({ request, locals: { supabase }, params }) => {
         const game_id = params.game_id as unknown as number;
+        console.log("Game Start")
 
         await supabase
             .from("games")

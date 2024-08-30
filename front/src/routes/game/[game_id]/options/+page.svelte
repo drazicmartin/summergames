@@ -7,7 +7,8 @@
     import MdLockOutline from 'svelte-icons/md/MdLockOutline.svelte'
     import MdAccountCircle from 'svelte-icons/md/MdAccountCircle.svelte'
     import MdDeleteForever from 'svelte-icons/md/MdDeleteForever.svelte'
-    import { tick } from 'svelte';
+    import { enhance } from '$app/forms';
+    import { onMount, tick } from 'svelte';
 			
     const modalStore = getModalStore(); 
 
@@ -217,30 +218,30 @@
                         <form method="POST" action="?/add_player" class="flex flex-col items-center justify-center mx-2 mt-5">
                             <input required name="player_email" class="input grow max-w-2xl mt-2 text-center" title="Input (email)" type="email" placeholder="john@example.com" autocomplete="email" />
                             <button
-                                type="submit"
-                                class="btn mt-2 grow max-w-2xl hover:border-blue-500 hover:border-solid hover:bg-slate-700 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-blue-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"
+                            type="submit"
+                            class="btn mt-2 grow max-w-2xl hover:border-blue-500 hover:border-solid hover:bg-slate-700 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-blue-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"
                             >
-                                Add user
-                            </button>
-                        </form>
-                        <form method="POST" action="?/add_summer_games_player" class="flex flex-col items-center justify-center mx-2 mt-5">
-                            <button
-                                type="submit"
-                                class="btn mt-2 grow max-w-2xl hover:border-blue-500 hover:border-solid hover:bg-slate-700 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-blue-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"
-                            >
-                                Add Summer Games Players
-                            </button>
-                        </form>
-                        <hr class="h-2 mx-5 my-4 bg-gray-500 rounded md:my-10">
-                        <form bind:this={reset_game_form} on:submit|preventDefault={handleSubmitResetGameState} method="POST" action="?/reset_game_state" class="flex flex-col items-center justify-center mx-2 my-2">
-                            <button
-                                type="submit"
-                                class="btn mt-2 grow max-w-2xl hover:border-red-500 hover:border-solid hover:bg-slate-700 hover:text-red-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-red-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"
-                            >
-                                Reset Game
-                            </button>
-                        </form>
-                        <form bind:this={delete_game_form} method="POST" action="?/delete_game" on:submit|preventDefault={handleSubmitDeleteGame} class="flex justify-center mx-2 my-2">
+                            Add user
+                        </button>
+                    </form>
+                    <form method="POST" action="?/add_summer_games_player" class="flex flex-col items-center justify-center mx-2 mt-5">
+                        <button
+                        type="submit"
+                        class="btn mt-2 grow max-w-2xl hover:border-blue-500 hover:border-solid hover:bg-slate-700 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-blue-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"
+                        >
+                        Add Summer Games Players
+                    </button>
+                </form>
+                <hr class="h-2 mx-5 my-4 bg-gray-500 rounded md:my-10">
+                <form bind:this={reset_game_form} on:submit|preventDefault={() => handleSubmitResetGameState()} method="POST" action="?/reset_game_state" class="flex flex-col items-center justify-center mx-2 my-2">
+                    <button
+                        type="submit"
+                        class="btn mt-2 grow max-w-2xl hover:border-red-500 hover:border-solid hover:bg-slate-700 hover:text-red-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-red-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"
+                    >
+                        Reset Game
+                    </button>
+                </form>
+                <form bind:this={delete_game_form} method="POST" action="?/delete_game" on:submit|preventDefault={handleSubmitDeleteGame} class="flex justify-center mx-2 my-2">
                             <button
                                 type="submit"
                                 class="btn grow max-w-2xl hover:border-red-500 hover:border-solid hover:bg-slate-700 hover:text-red-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-red-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"

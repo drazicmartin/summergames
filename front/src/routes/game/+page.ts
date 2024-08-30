@@ -28,6 +28,8 @@ async function  fetchPlayers(supabase, user_id){
 
 export const load = async ({ parent }) => {
   const { supabase, session } = await parent()
+
+  console.log(session);
   
   if (!session) {
     throw redirect(302, '/auth/login');

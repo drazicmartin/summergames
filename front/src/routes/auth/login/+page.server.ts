@@ -10,10 +10,13 @@ export const actions = {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
     })
+
+    console.log(data)
+    console.log(error)
 
     if (error) {
       return fail(500, { message: 'Server error. Try again later.', success: false, email })
@@ -21,6 +24,6 @@ export const actions = {
 
     console.log("Log in success")
 
-    // throw redirect(303, "/game");
+    throw redirect(303, "/game");
   },
 }

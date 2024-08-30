@@ -4,8 +4,8 @@ import { redirect } from '@sveltejs/kit'
 import { InitGameState, killLogic } from '$lib/Games.js';
 
 export const actions = {
-    kill_player: async ({ request, locals: { supabase, getSession }, params }) => {
-        let session = await getSession();
+    kill_player: async ({ request, locals: { supabase, safeGetSession }, params }) => {
+        let session = await safeGetSession();
 
         const game_id = params.game_id as unknown as number;
 
