@@ -6,7 +6,7 @@
     $: nb_alive_players = data.game.state['#alive_players'];
     $: alive_players_id = Object.keys(data.game.state.loop)
     $: loop = data.game.state.loop;
-    let fontSize = 25;
+    let fontSize = 18;
     let text_fact = 1.1;
     let r_fact = 2/5;
     let text_position = [];
@@ -62,8 +62,12 @@
             let k = 0;
             
             while (n > 0){
+                p5.fill('red');
                 p5.text(current_player.target_name, text_position[k].x, text_position[k].y);
+                p5.fill('green');
                 ({current_player_id, current_player} = get_next_player(current_player_id));
+                p5.textSize(fontSize-12);
+                p5.text(current_player.mission, text_position[k].x, text_position[k].y + 15);
                 n-=1;
                 k+=1;
             }

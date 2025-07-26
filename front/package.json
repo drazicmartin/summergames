@@ -36,6 +36,7 @@
     "@supabase/supabase-js": "^2.39.8",
     "@sveltejs/adapter-node": "^5.0.1",
     "clsx": "^2.1.0",
+    "p5-svelte": "^3.1.2",
     "simplex-noise": "^4.0.1",
     "svelte-icons": "^2.1.0",
     "svelte-inview": "^4.0.2",
