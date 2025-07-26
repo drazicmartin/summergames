@@ -1,8 +1,12 @@
 <script lang="ts">
     import { SlideToggle } from '@skeletonlabs/skeleton';
-    export let form
+    interface Props {
+        form: any;
+    }
 
-    let admin_player: boolean = false;
+    let { form }: Props = $props();
+
+    let admin_player: boolean = $state(false);
 </script>
 
 <section>

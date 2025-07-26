@@ -1,11 +1,15 @@
 <script lang="ts">
 	import P5 from 'p5-svelte';
-    export let data;
+  interface Props {
+    data: any;
+  }
+
+  let { data }: Props = $props();
     
-    $: game_id = data.game.id;
-    $: nb_alive_players = data.game.state['#alive_players'];
-    $: alive_players_id = Object.keys(data.game.state.loop)
-    $: loop = data.game.state.loop;
+    let game_id = $derived(data.game.id);
+    let nb_alive_players = $derived(data.game.state['#alive_players']);
+    let alive_players_id = $derived(Object.keys(data.game.state.loop))
+    let loop = $derived(data.game.state.loop);
     let fontSize = 18;
     let text_fact = 1.1;
     let r_fact = 2/5;

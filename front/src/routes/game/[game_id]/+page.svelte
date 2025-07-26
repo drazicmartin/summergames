@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { preventDefault } from 'svelte/legacy';
+
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import GiDeadHead from 'svelte-icons/gi/GiDeadHead.svelte'
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
@@ -8,21 +10,25 @@
 	
     const modalStore = getModalStore();
 
-    export let data;
-    export let form;
+    interface Props {
+        data: any;
+        form: any;
+    }
 
-    let kill_form: HTMLFormElement;
+    let { data, form }: Props = $props();
 
-    let game_name;
-    $: game_name = data.game.game_name;
-    $: game_id = data.game.id;
-    $: score = data.self_player.score;
-    $: kill_history = data.kill_history;
+    let kill_form: HTMLFormElement = $state();
+
+    let game_name = $derived(data.game.game_name);
     
-    let mission_1;
-    $: mission_1 = data.game.state?.loop[data.user.id];
+    let game_id = $derived(data.game.id);
+    let score = $derived(data.self_player.score);
+    let kill_history = $derived(data.kill_history);
+    
+    let mission_1 = $derived(data.game.state?.loop[data.user.id]);
+    
 
-    let password_value: string;
+    let password_value: string = $state();
 
     const modal: ModalSettings = {
         type: 'prompt',
@@ -102,11 +108,13 @@
                 mission={mission_1?.mission}
                 target_name={mission_1?.target_name}
             >
-            <form bind:this={kill_form} action="?/kill_player" method="POST" slot="kill_form" on:submit|preventDefault={handleFormKill}>
-                <input type="hidden" name="killed_player_password" bind:value={password_value}>
-                <input type="hidden" name="killed_player_id" value={mission_1?.target_id}>
-                <button type="submit" class="btn variant-filled mt-3 bg-red-600 max-w-xl w-full">I killed !</button>
-            </form>
+            {#snippet kill_form()}
+                                        <form bind:this={kill_form} action="?/kill_player" method="POST"  onsubmit={preventDefault(handleFormKill)}>
+                    <input type="hidden" name="killed_player_password" bind:value={password_value}>
+                    <input type="hidden" name="killed_player_id" value={mission_1?.target_id}>
+                    <button type="submit" class="btn variant-filled mt-3 bg-red-600 max-w-xl w-full">I killed !</button>
+                </form>
+                                    {/snippet}
             </Mission>
         </ul>
     {:else if (!data.game.is_started)}

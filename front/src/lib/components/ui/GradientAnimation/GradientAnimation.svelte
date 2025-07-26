@@ -1,19 +1,40 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { cn } from '$lib/utils/cn';
 	import { onMount } from 'svelte';
 
-	export let gradientBackgroundStart: string | null = 'rgb(108, 0, 162)';
-	export let gradientBackgroundEnd: string | null = 'rgb(0, 17, 82)';
-	export let firstColor: string | null = '18, 113, 255';
-	export let secondColor: string | null = '221, 74, 255';
-	export let thirdColor: string | null = '100, 220, 255';
-	export let fourthColor: string | null = '200, 50, 50';
-	export let fifthColor: string | null = '180, 180, 50';
-	export let pointerColor: string | null = '140, 100, 255';
-	export let size: string | null = '80%';
-	export let blendingValue: string | null = 'hard-light';
-	export let className: string | undefined = undefined;
-	export let containerClassName: string | undefined = undefined;
+	interface Props {
+		gradientBackgroundStart?: string | null;
+		gradientBackgroundEnd?: string | null;
+		firstColor?: string | null;
+		secondColor?: string | null;
+		thirdColor?: string | null;
+		fourthColor?: string | null;
+		fifthColor?: string | null;
+		pointerColor?: string | null;
+		size?: string | null;
+		blendingValue?: string | null;
+		className?: string | undefined;
+		containerClassName?: string | undefined;
+		children?: import('svelte').Snippet;
+	}
+
+	let {
+		gradientBackgroundStart = 'rgb(108, 0, 162)',
+		gradientBackgroundEnd = 'rgb(0, 17, 82)',
+		firstColor = '18, 113, 255',
+		secondColor = '221, 74, 255',
+		thirdColor = '100, 220, 255',
+		fourthColor = '200, 50, 50',
+		fifthColor = '180, 180, 50',
+		pointerColor = '140, 100, 255',
+		size = '80%',
+		blendingValue = 'hard-light',
+		className = undefined,
+		containerClassName = undefined,
+		children
+	}: Props = $props();
 
 	let interactiveRef: HTMLDivElement;
 
@@ -22,7 +43,6 @@
 	let tgX = 0;
 	let tgY = 0;
 
-	$: tgX || tgY, updateGradient();
 
 	onMount(() => {
 		document.body.style.setProperty('--gradient-background-start', gradientBackgroundStart);
@@ -45,6 +65,9 @@
 		curY = curY + (tgY - curY) / 20;
 		interactiveRef.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
 	}
+	run(() => {
+		tgX || tgY, updateGradient();
+	});
 </script>
 
 <div
@@ -67,7 +90,7 @@
 			</filter>
 		</defs>
 	</svg>
-	<div class={cn('', className)}><slot /></div>
+	<div class={cn('', className)}>{@render children?.()}</div>
 	<div class="gradients-container h-full w-full [filter:url(#blurMe)_blur(40px)]">
 		<div
 			class={cn(

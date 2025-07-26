@@ -1,12 +1,22 @@
 <script lang="ts">
+  import { run } from 'svelte/legacy';
+
   import { GetGameStatusColor } from '$lib/Games.ts';
 
-  export let data;
+  interface Props {
+    data: any;
+  }
 
-  let admin_games = [];
-  let players = [];
-  $: (admin_games = data.created_games);
-  $: (players = data.players);
+  let { data }: Props = $props();
+
+  let admin_games = $state([]);
+  let players = $state([]);
+  run(() => {
+    (admin_games = data.created_games);
+  });
+  run(() => {
+    (players = data.players);
+  });
 </script>
 
 <section class="divide-y">
