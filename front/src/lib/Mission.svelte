@@ -1,9 +1,19 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    export let mission = "MISSION DESCRIPTION";
-    export let target_name = "TARGET NAME";
-    export let title = "MAIN TITLE";
+    interface Props {
+        mission?: string;
+        target_name?: string;
+        title?: string;
+        kill_form?: import('svelte').Snippet;
+    }
+
+    let {
+        mission = "MISSION DESCRIPTION",
+        target_name = "TARGET NAME",
+        title = "MAIN TITLE",
+        kill_form
+    }: Props = $props();
 
     function typewriter(node, { speed = 1 }) {
 		const valid = node.childNodes.length === 1 && node.childNodes[0].nodeType === Node.TEXT_NODE;
@@ -24,7 +34,7 @@
 		};
 	}
 
-    let display = false;
+    let display = $state(false);
     onMount(() => {
         display = true;
     })
@@ -48,7 +58,7 @@
             {/if}
         </div>
         {#if target_name != "TARGET NAME" }
-            <slot name="kill_form"/>
+            {@render kill_form?.()}
         {/if} 
     </div>
 </div>

@@ -1,6 +1,12 @@
 <script lang="ts">
-    import { beforeUpdate, afterUpdate, tick } from "svelte";
-    export let target_date = new Date("2024-08-30T16:00:00");
+    import { run } from 'svelte/legacy';
+
+    import { tick } from "svelte";
+    interface Props {
+        target_date?: any;
+    }
+
+    let { target_date = new Date("2024-08-30T16:00:00") }: Props = $props();
 
     const millisecond = 1;
     const second = 1000*millisecond;
@@ -8,27 +14,37 @@
     const hour = 60*minute;
     const day = 24*hour;
     
-    let current_date = Date.now();
+    let current_date = $state(Date.now());
 
-    let time_diff = 0;
-    $: time_diff = target_date.getTime() - current_date;
+    let time_diff = $state(0);
+    run(() => {
+        time_diff = target_date.getTime() - current_date;
+    });
 
-    let day_diff = 0;
-    $: day_diff = Math.floor(time_diff / day);
-    let hour_diff = 0;
-    $: hour_diff = Math.floor((time_diff - day_diff*day) / hour);
-    let minute_diff = 0;
-    $: minute_diff = Math.floor((time_diff - day_diff*day - hour_diff*hour) / minute);
-    let second_diff = 0;
-    $: second_diff = Math.floor((time_diff - day_diff*day - hour_diff*hour - minute_diff*minute) / second);
+    let day_diff = $state(0);
+    run(() => {
+        day_diff = Math.floor(time_diff / day);
+    });
+    let hour_diff = $state(0);
+    run(() => {
+        hour_diff = Math.floor((time_diff - day_diff*day) / hour);
+    });
+    let minute_diff = $state(0);
+    run(() => {
+        minute_diff = Math.floor((time_diff - day_diff*day - hour_diff*hour) / minute);
+    });
+    let second_diff = $state(0);
+    run(() => {
+        second_diff = Math.floor((time_diff - day_diff*day - hour_diff*hour - minute_diff*minute) / second);
+    });
 
     let updateCurrentDate = () => current_date = Date.now();
 
-    let clear
-    $: {
+    let clear = $state()
+    run(() => {
         clearInterval(clear)
         clear = setInterval(updateCurrentDate, second)
-    }
+    });
 </script>
 
 

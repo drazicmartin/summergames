@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import "../app.css";
 	import "../app.pcss";
 	import '../styles.css'
@@ -9,20 +11,31 @@
 	import { page } from '$app/stores';
 	initializeStores();
 
-	export let data;
+	interface Props {
+		data: any;
+		children?: import('svelte').Snippet;
+	}
 
-	let currentPath: string = '';
-	let isGamePage = false;
+	let { data, children }: Props = $props();
+
+	let currentPath: string = $state('');
+	let isGamePage = $state(false);
 
 	// Subscribe to the $page store
-	$: currentPath = $page?.url?.pathname || '';
+	run(() => {
+		currentPath = $page?.url?.pathname || '';
+	});
 
 	// Check for '/game' in the URL when the component is mounted or the URL changes
-	$: isGamePage = currentPath.includes('/game');
+	run(() => {
+		isGamePage = currentPath.includes('/game');
+	});
 
 
-	let { supabase, session } = data
-	$: ({ supabase, session } = data)
+	let { supabase, session } = $state(data)
+	// run(() => {
+	// 	({ supabase, session } = data)
+	// });
 
 
 	const navItems = [
@@ -47,8 +60,7 @@
 		})
 	}
 
-	let is_logged: boolean;
-	$: (is_logged = session ? true : false)
+	let is_logged: boolean = $derived(session ? true : false);
 
 
 	onMount(() => {
@@ -63,8 +75,8 @@
 </script><!-- src/routes/+layout.svelte -->
 
 
-<Toast/>
-<Modal/>
+<!-- <Toast/>
+<Modal/> -->
 
 <svelte:head>
 	<title>Summer Games</title>
@@ -75,4 +87,4 @@
 	<FloatingNavbar {navItems} {is_logged}></FloatingNavbar>
 </div>
 {/if}
-<slot></slot>
+{@render children?.()}

@@ -1,13 +1,13 @@
 <!-- src/routes/+page.svelte -->
 <script lang="ts">
-	import GradientAnimation from "$lib/components/ui/GradientAnimation/GradientAnimation.svelte";
+	// import GradientAnimation from "$lib/components/ui/GradientAnimation/GradientAnimation.svelte";
 	// import Countdown from "$lib/components/Countdown.svelte";
 
 	let colors = ["#FC7850", "#FCB6A0", '#e879f9', '#22d3ee'];
 	let visible: boolean = true;
 </script>
 
-<GradientAnimation>
+<!-- <GradientAnimation> -->
 	<div
 		class="pointer-events-none absolute inset-0 z-50 flex items-center justify-center px-4 text-center text-3xl font-bold text-white md:text-4xl lg:text-7xl"
 	>
@@ -29,4 +29,4 @@
 			</div>
 	  	</div>
 	</div>
-</GradientAnimation>
+<!-- </GradientAnimation> -->

@@ -1,7 +1,8 @@
 <!-- // src/routes/login/+page.svelte -->
 <script>
 	import { enhance } from '$app/forms'
-	export let form
+    /** @type {{form: any}} */
+    let { form } = $props();
 </script>
 
 {#if form}

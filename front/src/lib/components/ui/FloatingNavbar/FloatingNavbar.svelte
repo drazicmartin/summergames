@@ -1,21 +1,26 @@
 <script lang="ts">
+    import { run } from 'svelte/legacy';
+
 	import { Motion, AnimatePresence, useViewportScroll, useMotionValue } from 'svelte-motion';
 	import { cn } from '$lib/utils/cn';
     import { page } from '$app/stores';
 
-	export let navItems: {
+    interface Props {
+        navItems: {
 		name: string;
 		link: string
 	}[];
-	export let className: string | undefined = undefined;
-    export let is_logged: boolean = false;
+        className?: string | undefined;
+        is_logged?: boolean;
+    }
+
+    let { navItems, className = undefined, is_logged = false }: Props = $props();
 
 	// const { scrollYProgress } = useScroll();
 	const { scrollYProgress } = useViewportScroll();
 
 	let visible = false;
 
-	$: $scrollYProgress, updateDirection();
 
 	function updateDirection() {
 		let direction = $scrollYProgress - scrollYProgress.getPrevious();
@@ -30,6 +35,9 @@
 			}
 		}
 	}
+	run(() => {
+        $scrollYProgress, updateDirection();
+    });
 </script>
 
 <AnimatePresence show={true}>
@@ -47,7 +55,7 @@
                     <span>{navItem.name}</span>
                     <span
                         class="absolute inset-x-0 text-lg -bottom-px mx-auto h-px w-1/2 bg-gradient-to-r from-transparent via-blue-500 to-transparent"
-                    />
+></span>
                 </button>
             {:else}
                 <a

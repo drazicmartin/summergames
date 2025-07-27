@@ -1,6 +1,7 @@
 <!-- // src/routes/login/+page.svelte -->
 <script>
-	export let form
+    /** @type {{form: any}} */
+    let { form } = $props();
 </script>
 
 {#if form}
