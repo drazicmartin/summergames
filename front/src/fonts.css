@@ -1,0 +1,8 @@
+/* fonts.css */
+
+@font-face {
+    font-family: 'SG';
+    font-style: normal;
+    font-weight: 500;
+    src: url('/fonts/Super Funky.ttf') format('truetype'), url('/fonts/Super Funky.woff') format('woff');
+}

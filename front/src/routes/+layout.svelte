@@ -4,6 +4,7 @@
 	import "../app.css";
 	import "../app.pcss";
 	import '../styles.css'
+	import '../fonts.css';
 	import { invalidate } from '$app/navigation'
 	import { Toast, Modal, initializeStores } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte'

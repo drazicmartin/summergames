@@ -9,7 +9,7 @@ export async function load({ params, locals: { supabase } }) {
         .select('*');
     
 	return {
-        nb_registered : profiles?.length
+        nb_registered : profiles?.length ?? 0
     };
 }
 

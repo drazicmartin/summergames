@@ -38,12 +38,12 @@
     "@supabase/supabase-js": "^2.39.8",
     "@sveltejs/adapter-node": "^5.0.1",
     "caniuse-lite": "^1.0.30001727",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
     "p5-svelte": "^3.1.2",
     "simplex-noise": "^4.0.1",
     "svelte-icons": "^2.1.0",
     "svelte-inview": "^4.0.2",
     "svelte-motion": "^0.12.2",
-    "tailwind-merge": "^2.2.2"
+    "tailwind-merge": "^2.6.0"
   }
 }

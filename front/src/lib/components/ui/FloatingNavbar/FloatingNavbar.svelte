@@ -48,7 +48,7 @@
         )}
     >
         {#each navItems as navItem, idx (`link=${idx}`)}
-            {#if $page.url.pathname == navItem.link}
+            {#if $page.url.pathname == navItem.link || (navItem.link == '/game' && $page.url.pathname == '/auth/login')}
                 <button
                     class="relative rounded-full border border-neutral-200 px-4 py-2 text-sm font-medium text-black dark:border-white/[0.2] dark:text-white"
                 >
