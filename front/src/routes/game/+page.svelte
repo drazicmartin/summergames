@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { run } from 'svelte/legacy';
-
-  import { GetGameStatusColor } from '$lib/Games.ts';
+  import { GetGameStatusColor } from '$lib/Games';
 
   interface Props {
     data: any;
@@ -9,14 +7,8 @@
 
   let { data }: Props = $props();
 
-  let admin_games = $state([]);
-  let players = $state([]);
-  run(() => {
-    (admin_games = data.created_games);
-  });
-  run(() => {
-    (players = data.players);
-  });
+  let admin_games = $state(data.created_games || []);
+  let players = $state(data.players || []);
 </script>
 
 <section class="divide-y">
@@ -63,18 +55,20 @@
     <h2 class="text-center bg-orange-900">Playing Games</h2>
     <ul class="p-4 sm:px-8 sm:pt-6 sm:pb-8 lg:p-4 xl:px-8 xl:pt-6 xl:pb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 text-sm leading-6">
       {#each players as player}
-        <li>
-          <a href="game/{player.games.id}" class="grow hover:border-blue-500 hover:border-solid hover:bg-slate-800 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-slate-300 text-sm leading-6 text-slate-900 font-medium py-3 px-8">
-            <div class="content">
-              <div class="content1">
-                {player.games.name}
+        {#if (player.games)}
+          <li>
+            <a href="game/{player.games.user_id}" class="grow hover:border-blue-500 hover:border-solid hover:bg-slate-800 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-slate-300 text-sm leading-6 text-slate-900 font-medium py-3 px-8">
+                <div class="content">
+                  <div class="content1">
+                    {player.games.name}
+                </div>
+                <div class="content2">
+                  <span class="dot" style:background-color={GetGameStatusColor(player.game)}></span>
+                </div>
               </div>
-              <div class="content2">
-                <span class="dot" style:background-color={GetGameStatusColor(player.game)}></span>
-              </div>
-            </div>
-          </a>
-        </li>
+            </a>
+          </li>
+        {/if}
       {/each}
     </ul>
   </div>

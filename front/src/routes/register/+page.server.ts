@@ -4,12 +4,16 @@ import { redirect } from '@sveltejs/kit'
 
 /** @type {import('./$types').PageLoad} */
 export async function load({ params, locals: { supabase } }) {
-    let { data: profiles, error } = await supabase
-        .from('profiles')
+    let { data: players, error } = await supabase
+        .from('players')
         .select('*');
     
+    if (error) {
+        console.error('Error fetching players:', error);
+    }
+    
 	return {
-        nb_registered : profiles?.length ?? 0
+        nb_registered : players?.length ?? 0
     };
 }
 
@@ -76,10 +80,10 @@ export const actions = {
     }
     
     const { data, error } = await supabase
-        .from('profiles')
+        .from('players')
         .insert([
             { 
-                id: register_data.user?.id,
+                user_id: register_data.user?.id,
                 firstname: first_name,
                 lastname: last_name,
                 vege: vege, 
@@ -107,7 +111,7 @@ export const actions = {
 
 
     return {
-        message: "Ton inscription a bien été enregistrée",
+        message: "Inscription enregistrée ! =D",
         success: true,
     }
   }

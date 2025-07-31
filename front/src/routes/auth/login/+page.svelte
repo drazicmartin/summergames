@@ -2,13 +2,26 @@
 <script>
     /** @type {{form: any}} */
     let { form } = $props();
+
+    import { onMount } from 'svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
+
+	onMount(() => {
+        if (form != null) {
+            if (form.success) {
+                toast.success(form.message, {
+                    position: "bottom-center"
+                });
+            } else {
+                toast.error(form.message, {
+                    position: "bottom-center"
+                });
+            }
+        }
+	})
 </script>
 
-{#if form}
-<h4>
-    {form.message}
-</h4>
-{/if}
+<Toaster />
 
 <div class="mt-28 flex justify-center items-center">
     <div class="w-4/5">

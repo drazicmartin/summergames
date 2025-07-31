@@ -17,7 +17,8 @@
 		children?: import('svelte').Snippet;
 	}
 
-	let { data, children }: Props = $props();
+	let { data, children }: Props = $props()
+	let { session, supabase } = $derived(data)
 
 	let currentPath: string = $state('');
 	let isGamePage = $state(false);
@@ -32,8 +33,6 @@
 		isGamePage = currentPath.includes('/game');
 	});
 
-
-	let { supabase, session } = $state(data)
 	// run(() => {
 	// 	({ supabase, session } = data)
 	// });
@@ -63,21 +62,16 @@
 
 	let is_logged: boolean = $derived(session ? true : false);
 
-
 	onMount(() => {
-		const { data } = supabase.auth.onAuthStateChange((event, newSession) => {
-			if (newSession?.expires_at !== session?.expires_at) {
-				invalidate('supabase:auth')
-			}
+		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
+		if (newSession?.expires_at !== session?.expires_at) {
+			invalidate('supabase:auth')
+		}
 		})
 
 		return () => data.subscription.unsubscribe()
 	})
-</script><!-- src/routes/+layout.svelte -->
-
-
-<!-- <Toast/>
-<Modal/> -->
+</script>
 
 <svelte:head>
 	<title>Summer Games</title>

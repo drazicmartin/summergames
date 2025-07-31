@@ -1,9 +1,10 @@
 // src/routes/login/+page.server.js
 import { fail } from '@sveltejs/kit'
 import { redirect } from '@sveltejs/kit'
+import type { Actions } from './$types'
 
 // src/routes/login/+page.server.ts
-export const actions = {
+export const actions: Actions = {
   login: async ({ request, url, locals: { supabase } }) => {
 
     const formData = await request.formData()
@@ -15,11 +16,11 @@ export const actions = {
       password
     })
 
-    if (error) {
-      return fail(500, { message: 'Server error. Try again later.', success: false, email })
-    }
+    console.log("Login attempt:", { email, data, error });
 
-    console.log("Log in success")
+    if (error) {
+      return fail(500, { message: error?.message, success: false, email})
+    }
 
     throw redirect(303, "/game");
   },
