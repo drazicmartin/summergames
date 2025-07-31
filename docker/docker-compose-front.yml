@@ -1,0 +1,27 @@
+# Usage
+#   Start:          docker compose up
+#   With helpers:   docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml up
+#   Stop:           docker compose down
+#   Destroy:        docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml down -v --remove-orphans
+
+name: summergames
+
+services:
+  summergames-front:
+    build: ../front/
+    image: summergames-front:latest
+    user: "node"
+    environment:
+      # Internal server error messages will not send stacktrace to the browser in production
+      NODE_ENV: 'production'
+      # Sets the timezone of the containers OS
+      TZ: 'Europe/Paris'
+      PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
+    restart: unless-stopped
+    # ports:
+    #   - 3000:3000
+    # networks:
+    #   - the-network
+
+volumes:
+  db-config:
