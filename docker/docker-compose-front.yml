@@ -18,10 +18,3 @@ services:
       TZ: 'Europe/Paris'
       PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
     restart: unless-stopped
-    # ports:
-    #   - 3000:3000
-    # networks:
-    #   - the-network
-
-volumes:
-  db-config:
