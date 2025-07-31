@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { run, preventDefault } from 'svelte/legacy';
+    import { preventDefault } from 'svelte/legacy';
 
     import { getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings } from '@skeletonlabs/skeleton';
@@ -20,63 +20,30 @@
     }
 
     let { data, form }: Props = $props();
-    let delete_game_form = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm delete ${game_name} Game`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? delete_game_form.submit() : null,
-    });
-    let change_password_game_form;
-    let change_name_form = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Change name for ${game_name} Game`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? change_name_form.submit() : null,
-    });
+    let delete_game_form = $state();
+    let change_password_game_form = $state();
+    let change_name_form = $state();
     let delete_user_form = $state();
-    let reset_game_form = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Reset Game State ?`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? reset_game_form.submit() : null,
-    });
-    let quit_game_form = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Shuffle Game State ?`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? quit_game_form.submit() : null,
-    });
-    let shuffle_game_form = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Shuffle Game State ?`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? shuffle_game_form.submit() : null,
-    });
-
+    let reset_game_form = $state();
+    let quit_game_form = $state();
+    let shuffle_game_form = $state();
     let delete_user_name = $state();
     
     let all_players = data.all_players;
-    let game_name = $state();
-    run(() => {
-        game_name = data.game.name;
-    });
+    let game_name = $derived(data.game.name);
     let game_id = $derived(data.game.id);
     let game = $derived(data.game);
 
     let cmps = $state([]);
     
-    let modal_delete_game: ModalSettings = $derived();
-    
+    let modal_delete_game: ModalSettings = $derived({
+        type: 'confirm',
+        // Data
+        title: `Confirm Delete ${game_name} Game`,
+        body: 'Are you sure you wish to proceed?',
+        // TRUE if confirm pressed, FALSE if cancel pressed
+        response: (r: boolean) => r ? delete_game_form.submit() : null,
+    });
 
     function handleSubmitDeleteGame(){
         modalStore.trigger(modal_delete_game);
@@ -96,7 +63,14 @@
         modalStore.trigger(modal_change_password);
     }
 
-    let modal_change_name: ModalSettings = $derived();
+    let modal_change_name: ModalSettings = $derived({
+        type: 'confirm',
+        // Data
+        title: `Confirm Change name for ${game_name} Game`,
+        body: 'Are you sure you wish to proceed?',
+        // TRUE if confirm pressed, FALSE if cancel pressed
+        response: (r: boolean) => r ? change_name_form.submit() : null,
+    });
     
 
     function handleSubmitChangeName(){
@@ -122,21 +96,42 @@
     }
 
 
-    let modal_reset_game_state: ModalSettings = $derived(); 
+    let modal_reset_game_state: ModalSettings = $derived({
+        type: 'confirm',
+        // Data
+        title: `Confirm Reset Game State ?`,
+        body: 'Are you sure you wish to proceed?',
+        // TRUE if confirm pressed, FALSE if cancel pressed
+        response: (r: boolean) => r ? reset_game_form.submit() : null,
+    });
     
     
     function handleSubmitResetGameState(){
         modalStore.trigger(modal_reset_game_state);
     }
 
-    let modal_shuffle_game_state: ModalSettings = $derived(); 
+    let modal_shuffle_game_state: ModalSettings = $derived({
+        type: 'confirm',
+        // Data
+        title: `Confirm Shuffle Game State ?`,
+        body: 'Are you sure you wish to proceed?',
+        // TRUE if confirm pressed, FALSE if cancel pressed
+        response: (r: boolean) => r ? shuffle_game_form.submit() : null,
+    });
     
     
     function handleSubmitShuffleGameState(){
         modalStore.trigger(modal_shuffle_game_state);
     }
 
-    let modal_quit_game: ModalSettings = $derived(); 
+    let modal_quit_game: ModalSettings = $derived({
+        type: 'confirm',
+        // Data
+        title: `Confirm Shuffle Game State ?`,
+        body: 'Are you sure you wish to proceed?',
+        // TRUE if confirm pressed, FALSE if cancel pressed
+        response: (r: boolean) => r ? quit_game_form.submit() : null,
+    });
     
     
     function handleSubmitQuitGame(){
