@@ -10,7 +10,7 @@ services:
   summergames-front:
     build:
       context: .
-      dockerfile: /front/Dockerfile
+      dockerfile: ./front/Dockerfile
       target: deployment
     image: summergames-front:latest
     user: "node"
