@@ -16,6 +16,12 @@ cd front; npm run dev
 - Storage: http://localhost:8000/storage/v1/
 - Realtime: http://localhost:8000/realtime/v1/
 
+### Do a backup
+```bash
+supabase db dump --data-only --db-url "postgres://postgres:your-super-secret-and-long-postgres-password@localhost:5432/postgres" --file data.sql
+supabase db dump --db-url "postgres://postgres:your-super-secret-and-long-postgres-password@localhost:5432/postgres" --file schema.sql
+```
+
 
 Access supabase dashboard with:
 - user : `supabase`
