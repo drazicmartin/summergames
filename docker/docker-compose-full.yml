@@ -8,7 +8,10 @@ name: summergames
 
 services:
   summergames-front:
-    build: ../front/
+    build:
+      context: .
+      dockerfile: /front/Dockerfile
+      target: deployment
     image: summergames-front:latest
     user: "node"
     environment:
