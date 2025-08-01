@@ -1,20 +1,18 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
+COPY package*.json .
 RUN npm ci --force
 # Pre-generate the .svelte-kit folder
 COPY . .
 RUN npx svelte-kit sync
 RUN npm run build
-RUN ls -l /app
-RUN npm prune --production
+RUN npm prune --omit=dev --force
 
-FROM node:18-alpine
+FROM node:18-alpine AS deployment
 WORKDIR /app
 COPY --from=builder /app/build build/
 COPY --from=builder /app/node_modules node_modules/
-COPY package.json .
 EXPOSE 3000
 ENV NODE_ENV=production
-ENV ORIGIN=http://localhost
-CMD [ "node", "build" ]
+ENV ORIGIN=https://app.summer-games.fr
+CMD [ "node", "build/index.js" ]
