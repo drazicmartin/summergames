@@ -18,5 +18,5 @@ services:
       NODE_ENV: 'production'
       # Sets the timezone of the containers OS
       TZ: 'Europe/Paris'
-      PUBLIC_SUPABASE_ANON_KEY: ${ANON_KEY}
+      PUBLIC_SUPABASE_ANON_KEY: ${PUBLIC_SUPABASE_ANON_KEY}
     restart: unless-stopped
