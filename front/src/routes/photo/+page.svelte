@@ -19,7 +19,7 @@
             Toutes les photos sont disponibles au téléchargement en cliquant sur le bouton en dessous, n'hésitez pas à téléverser vos photos pour les ajouter à la galerie.
         </div>
         <button type="button" class="btn mt-3">
-            <a class="link" href="https://immich.summer-games.fr/share/Hjt6xEY5CjfQFY1sYZ7iXAM2mSknwvMoiMPuuLPxUpEhyUItjiop2-0NOrW1q-SrSR8">toute les Photos & Vidéo</a>
+            <a class="link" href="https://immich.summer-games.fr/share/Hjt6xEY5CjfQFY1sYZ7iXAM2mSknwvMoiMPuuLPxUpEhyUItjiop2-0NOrW1q-SrSR8">Toutes les Photos & Vidéos</a>
         </button>
     </div>
     <div class="grid grid-cols-2 gap-2">
