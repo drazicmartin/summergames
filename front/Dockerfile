@@ -9,6 +9,7 @@ RUN npm run build
 RUN npm prune --omit=dev --force
 
 FROM node:bookworm-slim AS deployment
+RUN apt-get update && apt-get install -y curl
 WORKDIR /app
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/build build/
