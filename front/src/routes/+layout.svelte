@@ -48,9 +48,13 @@
 			link: '/info',
 		},
 		{
-			name: 'Killer',
-			link: '/game',
+			name: 'Photo',
+			link: '/photo',
 		},
+		// {
+		// 	name: 'Killer',
+		// 	link: '/game',
+		// },
 	];
 
 	if (!data?.session) {

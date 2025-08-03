@@ -6,14 +6,14 @@
 
 
 <div
-	class="relative flex h-full w-full flex-col items-center justify-center overflow-hidden"
+	class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden"
 >
 	<Ripple />
 	
 	<div class="absolute inset-0 flex items-center justify-center">
 		<WordsPullUp
-			class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-10xl font-bold tracking-[-0.02em] text-black dark:text-white"
-			words="Summer Games"
+			class="text-7xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-10xl font-bold tracking-[-0.02em] text-black dark:text-white"
+			words="The Summer Games"
 			delay={0.5}
 		/>
 	</div>

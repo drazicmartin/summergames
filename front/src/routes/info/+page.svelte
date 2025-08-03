@@ -8,7 +8,7 @@
     import GiLightBulb from 'svelte-icons/gi/GiLightBulb.svelte'
 </script>
 
-<div class="mt-28 flex justify-center i tems-center">
+<div class="mt-32 flex justify-center i tems-center">
     <div class="w-4/5">
         <Accordion>
             <AccordionItem open>
