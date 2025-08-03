@@ -27,7 +27,7 @@
 			<div>Vendredi 28 - Dimanche 30</div>
 			<span>Août 2026</span>
 			<h1 class="mb-5">
-				Summer Games
+				The Summer Games
 			</h1>
 		</div>
 	</div>
