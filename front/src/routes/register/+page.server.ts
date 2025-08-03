@@ -13,7 +13,7 @@ export async function load({ params, locals: { supabase } }) {
     }
     
 	return {
-        nb_registered : players?.length ?? 0
+        num_player : players?.length ?? 0
     };
 }
 
@@ -24,24 +24,28 @@ export const actions = {
         
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-    const first_name = formData.get('firstname') as string;
-    const last_name = formData.get('lastname') as string;
+    const firstname = formData.get('firstname') as string;
+    const lastname = formData.get('lastname') as string;
     const vege = formData.get('vege') as unknown as boolean;
     const killer = formData.get('killer') as unknown as boolean;
     const insta = formData.get('insta') as unknown as boolean;
-    const message = formData.get('message') as string;
+    const msg = formData.get('msg') as string;
+
+    let input_data = {
+        email: email,
+        firstname: firstname,
+        lastname: lastname,
+        vege: vege,
+        insta: insta,
+        msg: msg,
+        killer: killer,
+    }
 
     if (!email) {
         return fail(400, {
             message: 'Please enter your email',
             success: false,
-            email: email,
-            first_name: first_name,
-            last_name: last_name,
-            vege: vege,
-            insta: insta,
-            msg: message,
-            killer: killer
+            input_data: input_data,
         });
     }
 
@@ -49,13 +53,7 @@ export const actions = {
         return fail(400, {
             message: 'Please enter your password',
             success: false,
-            email: email,
-            first_name: first_name,
-            last_name: last_name,
-            vege: vege,
-            insta: insta,
-            msg: message,
-            killer: killer
+            input_data: input_data,
         });
     }
     
@@ -69,13 +67,7 @@ export const actions = {
             { 
                 message: register_error.message,
                 success: false,
-                email: email,
-                first_name: first_name,
-                last_name: last_name,
-                vege: vege,
-                insta: insta,
-                msg: message,
-                killer: killer
+                input_data: input_data,
             })
     }
     
@@ -84,11 +76,11 @@ export const actions = {
         .insert([
             { 
                 user_id: register_data.user?.id,
-                firstname: first_name,
-                lastname: last_name,
+                firstname: firstname,
+                lastname: lastname,
                 vege: vege, 
                 insta: insta,
-                message: message,
+                message: msg,
                 killer: killer,
             },
         ])
@@ -99,13 +91,7 @@ export const actions = {
             { 
                 message: error.message,
                 success: false,
-                email: email,
-                first_name: first_name,
-                last_name: last_name,
-                vege: vege,
-                insta: insta,
-                msg: message,
-                killer: killer,
+                input_data: input_data,
             })
     }
 
