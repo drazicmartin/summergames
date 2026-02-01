@@ -24,8 +24,8 @@
 	
 	<div class="absolute bottom-0 mb-0">
 		<div class="flex justify-center items-center flex-col text-center text-white font-bold">
-			<div>Vendredi 28 - Dimanche 30</div>
-			<span>Août 2026</span>
+			<div>Vendredi 3 - Dimanche 5</div>
+			<span>Juillet 2026</span>
 			<h1 class="mb-5">
 				The Summer Games
 			</h1>
