@@ -5,7 +5,7 @@
         target_date?: any;
     }
 
-    let { target_date = new Date("2026-08-28T16:00:00") }: Props = $props();
+    let { target_date = new Date("2026-07-03T16:00:00") }: Props = $props();
 
     const millisecond = 1;
     const second = 1000*millisecond;
