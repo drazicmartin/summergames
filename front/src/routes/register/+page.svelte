@@ -78,7 +78,7 @@
 
             <label class="flex items-center space-x-2">
                 <input class="checkbox" type="checkbox" required/>
-                <p class="text-red-500 text-xs">J'accepte de payer la somme de 35€ (Summeria au 0781044869, ou en espèce le jour J)</p>
+                <p class="text-red-500 text-xs">J'accepte de payer la somme de 35€ (Summeria/Wero/Lydia au 0781044869, ou en espèce le jour J)</p>
             </label>
 
             <div class="flex w-full my-5 mv-5 justify-center">
