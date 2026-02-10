@@ -13,10 +13,9 @@
       <iframe 
         src="https://immich.summer-games.fr/share/V7Pfw29eq3ib9M-ohc_Nk3QUCDvt-pBA5lTNMxY_jcfQmxceWMeeK5yRQcVQtHEgKcQ" 
         title="Summer Games Video"
-        class="w-4/6 h-96"
+        class="w-4/5 h-96 rounded-lg shadow-lg border border-gray-300"
       ></iframe>
     </div>
-  
     <div class="mt-12 flex justify-center items-center">
       <div class="w-4/5">
           <Accordion>
