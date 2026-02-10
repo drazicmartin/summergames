@@ -37,10 +37,10 @@
                   {#snippet content()}
                 
                         <p class="text-justify">
-                            C'est un événement divertissant et compétitif entre amis pendant un week-end!<br>
-                            L'idée générale c'est que <b>deux</b> équipes s'affrontent en jouant à des Jeux/Activités que l'on a organisés.
+                            C'est un événement ludique, festif et compétitif entre amis pendant un week-end!<br>
+                            L'idée générale, deux équipes s'affrontent en jouant à des Jeux/Activités que l'on a organisés.
                             À la fin du week-end, l'équipe avec le plus de points remporte le titre de <b>Vainqueur des Summer Games !</b> <br><br>
-                            En plus de participer à la compétition, vous aurez également la possibilité de jouer à d'autres jeux en libre-service à tout moment le temps que l'on organise votre prochain défi !.
+                            En plus de participer à la compétition, vous aurez également la possibilité de jouer à d'autres jeux en libre-service à tout moment le temps que l'on organise votre prochain défi !
                         </p>
                     
                 {/snippet}
@@ -59,8 +59,8 @@
                   {#snippet content()}
                 
                         <p class="text-justify">
-                            La compétition sera composée de jeux sportif, créatifs et stratégiques. <br><br>
-                            Certains jeux seront issus de l'édition précédente mais d'autres seront inédits ! Pour les nouveaux participants, nous préférons ne pas donner de détails sur les jeux pour que vous ayez la surprise.
+                            La compétition sera composée de jeux sportifs, créatifs et stratégiques. <br><br>
+                            Certains jeux seront issus des éditions précédentes mais d'autres seront inédits ! Pour les nouveaux participants, afin de vous garder la surprise, nous préférons ne pas donner plus de détails sur les jeux.
                         </p>
                     
                 {/snippet}
@@ -83,7 +83,7 @@
                             On s'occupe (presque) de tout, achats de l'équipement pour les activités, les boissons, les repas. Vous n'avez rien a apporter à ce niveau là. En échange on vous demande une contribution de 35€ afin d'acheter tout ce qu'il faut. Le but est simplement d'organiser un week-end sympa entre amis ! <br><br>
                             Vous devrez cependant venir avec votre matos de camping, tentes, matelas, sacs de couchage, et tout autre équipement nécessaire pour assurer votre confort pendant votre séjour en plein air.
                             <br>
-                            Rendez-vous le vendredi <b>3 juillet</b> à partir de <b>16h</b> jusqu'au dimanche <b>5 juillet</b> après-midi à Lieurey, 61 impasse des Croix bigeolles 27560. (En Normandie)
+                            Rendez-vous du vendredi <b>3 juillet</b> à partir de <b>16h</b> jusqu'au dimanche <b>5 juillet</b> après-midi à Lieurey, 61 impasse des Croix bigeolles 27560. (En Normandie)
                         </p>
                     
                 {/snippet}
