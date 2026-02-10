@@ -18,7 +18,7 @@
 <AnimatePresence show={true}>
     <div
         class={cn(
-            'fixed inset-x-0 top-10 z-[5000] mx-auto flex max-w-fit items-center justify-center space-x-4 rounded-full border border-transparent bg-white py-2 pl-2 pr-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:border-white/[0.2] dark:bg-black',
+            'fixed inset-x-0 top-10 z-[5000] mx-auto flex max-w-fit items-center justify-center space-x-2 rounded-full border border-transparent bg-white py-2 pl-2 pr-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] dark:border-white/[0.2] dark:bg-black',
             className
         )}
     >
@@ -36,7 +36,7 @@
                 <a
                     href={navItem.link}
                     class={cn(
-                        "relative rounded-full border px-4 py-2 text-lg font-medium text-black dark:border-white/[0.2] dark:text-white"
+                        "relative rounded-full border px-2 py-2 text-base text-black dark:border-white/[0.2] dark:text-white"
                     )}
                 >
                     {navItem.name}
@@ -46,7 +46,7 @@
         {#if is_logged}
             <form method="post" action="/account?/signout">
                 <button 
-                    class="relative bg-white rounded-full border px-4 py-2 text-lg font-medium text-black" 
+                    class="relative bg-white rounded-full border px-2 py-2 text-lg font-medium text-black" 
                     style:font-family="var(--custom-font-family)"
                 >
                     logout
