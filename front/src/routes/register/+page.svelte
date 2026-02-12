@@ -55,7 +55,7 @@
             <span>Information générale :</span>
             <input type="text" class="grow input flex items-center gap-2 bg-white my-2" placeholder="Nom" required name="lastname" value={form?.input_data?.lastname ?? ''} />
             <input type="text" class="grow input flex items-center gap-2 bg-white my-2" placeholder="Prénom" required name="firstname" value={form?.input_data?.firstname ?? ''} />
-            <input type="date" class="grow input flex items-center gap-2 bg-white my-2" required name="birthdate" value={form?.input_data?.birthdate ?? ''} />
+            <input type="date" class="grow input flex items-center gap-2 text-gray-500 bg-white my-2" required name="birthdate" value={form?.input_data?.birthdate ?? ''} />
 
             <div class="flex justify-center space-y-2">
                 <label class="flex items-center space-x-2">
