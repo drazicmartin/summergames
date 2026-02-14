@@ -31,6 +31,7 @@ export const actions = {
     const insta = formData.get('insta') as unknown as boolean;
     const msg = formData.get('msg') as string;
     const birthdate = formData.get('birthdate') as string;
+    const phone = formData.get('phone') as string;
 
     let input_data = {
         email: email,
@@ -41,6 +42,7 @@ export const actions = {
         msg: msg,
         killer: killer,
         birthdate: birthdate,
+        phone: phone,
     }
 
     if (!email) {
@@ -85,6 +87,7 @@ export const actions = {
                 message: msg,
                 killer: killer,
                 birthdate: birthdate,
+                phone: phone,
                 email: email,
                 name: `${firstname} ${lastname}`,
             },
