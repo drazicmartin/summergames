@@ -27,9 +27,9 @@
   {#if data.players?.length === 0}
     <p>No registered users yet.</p>
   {:else}
-    <div class="overflow-x-auto rounded-lg border">
+    <div class="mt-8 overflow-x-auto rounded-lg border">
       <table class="min-w-full text-left text-sm text-gray-800 dark:text-gray-100">
-        <thead class="bg-gray-100 text-xs uppercase tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+        <thead class="bg-slate-200 text-xs uppercase tracking-wide text-slate-800 dark:bg-slate-900 dark:text-slate-100">
           <tr>
             <th class="px-3 py-2">Name</th>
             <th class="px-3 py-2">Firstname</th>
