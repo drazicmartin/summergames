@@ -1,7 +1,7 @@
 // src/routes/login/+page.server.js
 import { fail } from '@sveltejs/kit'
 import { redirect } from '@sveltejs/kit'
-import { InitGameState, ShuffleGameState, addScore, fetchGameState, findKillerIdFromKilledId, killLogic, updateGameState } from '$lib/Games.ts';
+import { InitGameState, ShuffleGameState, addScore, fetchGameState, findKillerIdFromKilledId, killLogic, updateGameState } from '$lib/Games';
 
 export const actions = {
     delete_game: async ({ request, locals: { supabase }, params }) => {
@@ -27,6 +27,9 @@ export const actions = {
     },
     change_password: async ({ request, locals: { supabase, safeGetSession }, params }) => {
         let session = await safeGetSession();
+        if (!session?.user) {
+            return fail(401, { message: 'Authentication required', success: false });
+        }
 
         const game_id = params.game_id as unknown as number;
 
@@ -76,6 +79,9 @@ export const actions = {
     },
     change_name: async ({ request, locals: { supabase, safeGetSession }, params }) => {
         let session = await safeGetSession();
+        if (!session?.user) {
+            return fail(401, { message: 'Authentication required', success: false });
+        }
 
         const game_id = params.game_id as unknown as number;
 
@@ -108,6 +114,9 @@ export const actions = {
     },
     delete_user: async ({ request, locals: { supabase, safeGetSession }, params }) => {
         let session = await safeGetSession();
+        if (!session?.user) {
+            return fail(401, { message: 'Authentication required', success: false });
+        }
 
         const game_id = params.game_id as unknown as number;
 
@@ -184,6 +193,10 @@ export const actions = {
     },
     quit_game: async ({ request, locals: { supabase, safeGetSession }, params }) => {
         let session = await safeGetSession();
+        if (!session?.user) {
+            return fail(401, { message: 'Authentication required', success: false });
+        }
+
         const game_id = params.game_id as unknown as number;
 
         const {data, error} = await supabase

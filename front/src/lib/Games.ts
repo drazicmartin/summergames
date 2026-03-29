@@ -34,8 +34,12 @@ export async function ShuffleGameState(supabase: SupabaseClient, game_id: number
         .eq("id", game_id)
         .single();
 
-    if (game.is_started || game.is_finish){
-        return fail(405, {message: "game has not staretd yet or is already finsish"});
+    if (!game) {
+        return fail(404, { message: 'Game not found' });
+    }
+
+    if (game.is_started || game.is_finish) {
+        return fail(405, { message: 'Cannot shuffle a game that has already started or finished' });
     }
 
     const { data: alive_players, error: e_p } = await supabase
@@ -214,24 +218,41 @@ export async function addScore(supabase: SupabaseClient, game_id: number, player
         .eq("user_id", player_id);
 }
 
-export async function killLogic(supabase: SupabaseClient, game_id: number, killed_player_id: string, killer_player_id: string, add_score : boolean = true) {
-    let { state } = await fetchGameState(supabase, game_id);
+export async function killLogic(supabase: SupabaseClient, game_id: number, killed_player_id: string, killer_player_id: string, add_score: boolean = true) {
+    const gameData = await fetchGameState(supabase, game_id);
 
-    setPlayerDead(supabase, game_id, killed_player_id);
+    if (!gameData || !gameData.state || !gameData.state.loop) {
+        return fail(400, { message: 'Invalid game state' });
+    }
+
+    const state = gameData.state;
+
+    if (!state.loop[killer_player_id] || !state.loop[killed_player_id]) {
+        return fail(400, { message: 'Invalid killer or killed player in state loop' });
+    }
+
+    await setPlayerDead(supabase, game_id, killed_player_id);
 
     let kill_history = [];
-    if ('kill_history' in state.loop[killer_player_id]){
+
+    if ('kill_history' in state.loop[killer_player_id]) {
         kill_history = state.loop[killer_player_id].kill_history;
     }
+
     kill_history.push(state.loop[killer_player_id].target_name);
     state.loop[killer_player_id] = state.loop[killed_player_id];
     state.loop[killer_player_id].kill_history = kill_history;
-    
+
     state.loop[killed_player_id].killed_by_id = killer_player_id;
     state.loop[killed_player_id].is_dead = true;
-    state['#alive_players'] -= 1;
+    state['#alive_players'] = (state['#alive_players'] || 1) - 1;
 
     await updateGameState(supabase, game_id, state);
+
+    return {
+        success: true,
+        message: 'Kill processed',
+    };
 }
 
 export function findKillerIdFromKilledId(killed_id : string, game_loop : Object){
