@@ -51,6 +51,10 @@
 			name: 'Photo',
 			link: '/photo',
 		},
+		{
+			name: 'Users',
+			link: '/users',
+		},
 		// {
 		// 	name: 'Killer',
 		// 	link: '/game',
