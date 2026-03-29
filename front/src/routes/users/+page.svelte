@@ -28,11 +28,10 @@
     <p>No registered users yet.</p>
   {:else}
     <div class="overflow-x-auto rounded-lg border">
-      <table class="min-w-full text-left text-sm text-gray-700 dark:text-gray-200">
+      <table class="min-w-full text-left text-sm text-gray-800 dark:text-gray-100">
         <thead class="bg-gray-100 text-xs uppercase tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-300">
           <tr>
             <th class="px-3 py-2">Name</th>
-            <th class="px-3 py-2">Email</th>
             <th class="px-3 py-2">Firstname</th>
             <th class="px-3 py-2">Lastname</th>
             <th class="px-3 py-2">Birthdate</th>
@@ -46,16 +45,15 @@
         <tbody>
           {#each data.players as player}
             <tr class="border-t odd:bg-white even:bg-gray-50 dark:odd:bg-gray-900 dark:even:bg-gray-850">
-              <td class="px-3 py-2">{player.name || `${player.firstname} ${player.lastname}`}</td>
-              <td class="px-3 py-2">{player.email}</td>
-              <td class="px-3 py-2">{player.firstname}</td>
-              <td class="px-3 py-2">{player.lastname}</td>
-              <td class="px-3 py-2">{player.birthdate}</td>
-              <td class="px-3 py-2">{player.phone}</td>
-              <td class="px-3 py-2">{player.vege ? '✅' : '✖️'}</td>
-              <td class="px-3 py-2">{player.insta ? '✅' : '✖️'}</td>
-              <td class="px-3 py-2">{player.killer ? '✅' : '✖️'}</td>
-              <td class="px-3 py-2">{new Date(player.created_at).toLocaleString()}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{player.name || `${player.firstname} ${player.lastname}`}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{player.firstname}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{player.lastname}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{player.birthdate}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{player.phone}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{player.vege ? '✅' : '✖️'}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{player.insta ? '✅' : '✖️'}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{player.killer ? '✅' : '✖️'}</td>
+              <td class="px-3 py-2 text-gray-700 dark:text-gray-200">{new Date(player.created_at).toLocaleString()}</td>
             </tr>
           {/each}
         </tbody>
