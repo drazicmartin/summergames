@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { fail } from "@sveltejs/kit";
-import { user } from "./UserStore";
+
 
 export function GetGameStatusColor(game) {
     if (game?.is_finish) return "red"
@@ -132,14 +132,14 @@ export async function InitGameState(supabase: SupabaseClient, game_id: number){
                         .eq("game_id", game_id);
 
     let state = {
-        loop: {}
+        'loop': {},
+        '#players': 0,
+        '#alive_players': 0
     };
-    state['#players'] = 0;
-    state['#alive_players'] = 0;
 
     let remaining_mission = shuffle(missions);
     let players_shuffled = shuffle(players);
-    let last_mission;
+    let last_mission = '';
 
     players_shuffled.forEach((player, index, players) => {
         if (remaining_mission.length <= 2){

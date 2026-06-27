@@ -1,14 +1,8 @@
 <script lang="ts">
     import { preventDefault } from 'svelte/legacy';
 
-    import { Modal, getModalStore } from '@skeletonlabs/skeleton';
-    import GiDeadHead from 'svelte-icons/gi/GiDeadHead.svelte'
-    import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
     import Mission from "$lib/Mission.svelte";
-    import MdSettings from 'svelte-icons/md/MdSettings.svelte'
     import { tick } from 'svelte';
-	
-    const modalStore = getModalStore();
 
     interface Props {
         data: any;
@@ -17,50 +11,38 @@
 
     let { data, form }: Props = $props();
 
-    let kill_form: HTMLFormElement = $state();
+    let kill_form: HTMLFormElement | undefined = $state();
 
-    let game_name = $derived(data.game.game_name);
-    
-    let game_id = $derived(data.game.id);
-    let score = $derived(data.self_player.score);
-    let kill_history = $derived(data.kill_history);
-    
-    let mission_1 = $derived(data.game.state?.loop[data.user.id]);
-    
+    let game_name = $derived(data.game?.game_name ?? '');
+    let game_id = $derived(data.game?.id ?? '');
+    let score = $derived(data.self_player?.score ?? 0);
+    let kill_history = $derived(data.kill_history ?? []);
 
-    let password_value: string = $state();
+    let mission_1 = $derived(data.game?.state?.loop?.[data.user?.id] ?? null);
 
-    const modal: ModalSettings = {
-        type: 'prompt',
-        // Data
-        title: 'Kill confirmation',
-        body: 'Ask the person you just kill to enter his game\'s password (default is "password")',
-        // Populates the input value and attributes
-        value: '',
-        valueAttr: { type: 'password', required: true },
-        // Returns the updated response value
-        response: async (r: string) => {
-            password_value = r;
-            await tick();
-            if (!!r){
-                kill_form.submit();
-            }
-        },
-    };
+    $inspect(data.user?.id, "data.user?.id");
 
-    function handleFormKill(){
-        modalStore.trigger(modal);
+    let password_value: string = $state('');
+
+    async function handleFormKill() {
+        const response = prompt('Enter the killed player password (default is "password"):');
+        if (response === null || response === '') {
+            return;
+        }
+        password_value = response;
+        await tick();
+        kill_form?.submit();
     }
 </script>
 
 <section>
     <header class="space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6 ">
-      <div class="flex items-center">
+      <div class="flex items-center gap-4">
         <h2 class="font-semibold text-3xl text-slate-200">
             Game : {data.game.name}
         </h2>
-        <a class="h-10 mx-10 flex" href="/game/{game_id}/options">
-            <MdSettings />
+        <a class="btn variant-outlined rounded-full px-3 py-2 text-sm" href={`/game/${game_id}/options`}>
+            Options
         </a>
         <a
             href="/game"
@@ -81,23 +63,19 @@
         Your score : {score}
     </h2>
 
-    {#if data.self_player.is_dead}
+    {#if data.self_player?.is_dead}
         <ul class="p-4 sm:px-8 sm:pt-6 sm:pb-8 lg:p-4 xl:px-8 xl:pt-6 xl:pb-8 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-4 text-sm leading-6">
             <div class="flex flex-col justify-center items-center">
                 <div class="flex items-center">
-                    <span class="flex w-10 text-red-500">
-                        <GiDeadHead />
-                    </span>
+                    <span class="flex w-10 text-red-500 text-2xl justify-center">💀</span>
                     <div class="text-red-500 text-2xl">
                         You are dead ! 
                     </div>
-                    <span class="flex w-10 text-red-500">
-                        <GiDeadHead />
-                    </span>
+                    <span class="flex w-10 text-red-500 text-2xl justify-center">💀</span>
                 </div>
                 <div class="text-center mt-2 text-base">
                     Follow the game state, but tell and show no one what you know !
-                    <a href="/game/{game_id}/state" class="btn variant-filled mt-3 bg-blue-600 max-w-xl w-full">Game state</a>
+                    <a href={`/game/${game_id}/state`} class="btn variant-filled mt-3 bg-blue-600 max-w-xl w-full">Game state</a>
                 </div>
             </div>
         </ul>
@@ -107,15 +85,17 @@
                 title="Your Target"
                 mission={mission_1?.mission}
                 target_name={mission_1?.target_name}
-            >
-            {#snippet kill_form()}
-                                        <form bind:this={kill_form} action="?/kill_player" method="POST"  onsubmit={preventDefault(handleFormKill)}>
+            />
+
+            {#if mission_1}
+                <form bind:this={kill_form} action="?/kill_player" method="POST" onsubmit={preventDefault(handleFormKill)} class="mt-4 flex flex-col items-center justify-center gap-3">
                     <input type="hidden" name="killed_player_password" bind:value={password_value}>
-                    <input type="hidden" name="killed_player_id" value={mission_1?.target_id}>
+                    <input type="hidden" name="killed_player_id" value={mission_1.target_id}>
                     <button type="submit" class="btn variant-filled mt-3 bg-red-600 max-w-xl w-full">I killed !</button>
                 </form>
-                                    {/snippet}
-            </Mission>
+            {:else}
+                <div class="text-center text-slate-300">No mission assigned yet.</div>
+            {/if}
         </ul>
     {:else if (!data.game.is_started)}
         <div class="text-6xl text-center text-red-400 p-4 sm:px-8 sm:pt-6 sm:pb-8 lg:p-4 xl:px-8 xl:pt-6 xl:pb-8 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-4">

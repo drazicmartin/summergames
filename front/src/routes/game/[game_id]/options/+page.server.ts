@@ -2,6 +2,7 @@
 import { fail } from '@sveltejs/kit'
 import { redirect } from '@sveltejs/kit'
 import { InitGameState, ShuffleGameState, addScore, fetchGameState, findKillerIdFromKilledId, killLogic, updateGameState } from '$lib/Games';
+import { filter } from '@skeletonlabs/skeleton';
 
 export const actions = {
     delete_game: async ({ request, locals: { supabase }, params }) => {

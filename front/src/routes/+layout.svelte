@@ -51,10 +51,10 @@
 			name: 'Photo',
 			link: '/photo',
 		},
-		// {
-		// 	name: 'Killer',
-		// 	link: '/game',
-		// },
+		{
+			name: 'Killer',
+			link: '/game',
+		},
 	];
 
 	if (!data?.session) {
@@ -68,9 +68,9 @@
 
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
-		if (newSession?.expires_at !== session?.expires_at) {
-			invalidate('supabase:auth')
-		}
+			if (newSession?.access_token !== session?.access_token) {
+				invalidate('supabase:auth')
+			}
 		})
 
 		return () => data.subscription.unsubscribe()

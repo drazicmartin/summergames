@@ -1,18 +1,11 @@
 <script lang="ts">
     import { preventDefault } from 'svelte/legacy';
-
-    import { getModalStore } from '@skeletonlabs/skeleton';
-    import type { ModalSettings } from '@skeletonlabs/skeleton';
     import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
-    import MdSecurity from 'svelte-icons/md/MdSecurity.svelte'
-    import MdInfoOutline from 'svelte-icons/md/MdInfoOutline.svelte'
-    import MdLockOutline from 'svelte-icons/md/MdLockOutline.svelte'
-    import MdAccountCircle from 'svelte-icons/md/MdAccountCircle.svelte'
-    import MdDeleteForever from 'svelte-icons/md/MdDeleteForever.svelte'
-    import { enhance } from '$app/forms';
-    import { onMount, tick } from 'svelte';
-			
-    const modalStore = getModalStore(); 
+    import MdSecurity from 'svelte-icons/md/MdSecurity.svelte';
+    import MdInfoOutline from 'svelte-icons/md/MdInfoOutline.svelte';
+    import MdLockOutline from 'svelte-icons/md/MdLockOutline.svelte';
+    import MdAccountCircle from 'svelte-icons/md/MdAccountCircle.svelte';
+    import MdDeleteForever from 'svelte-icons/md/MdDeleteForever.svelte';
 
     interface Props {
         data: any;
@@ -23,119 +16,58 @@
     let delete_game_form = $state();
     let change_password_game_form = $state();
     let change_name_form = $state();
-    let delete_user_form = $state();
     let reset_game_form = $state();
     let quit_game_form = $state();
     let shuffle_game_form = $state();
-    let delete_user_name = $state();
-    
     let all_players = data.all_players;
     let game_name = $derived(data.game.name);
     let game_id = $derived(data.game.id);
     let game = $derived(data.game);
-
     let cmps = $state([]);
-    
-    let modal_delete_game: ModalSettings = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Delete ${game_name} Game`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? delete_game_form.submit() : null,
-    });
 
-    function handleSubmitDeleteGame(){
-        modalStore.trigger(modal_delete_game);
+    function handleSubmitDeleteGame() {
+        if (confirm(`Delete game "${game_name}"? This action cannot be undone.`)) {
+            delete_game_form.submit();
+        }
     }
 
-    let modal_change_password: ModalSettings = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Change password for ${game_name} Game`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? change_password_game_form.submit() : null,
-    });
-    
-
-    function handleSubmitChangePassword(){
-        modalStore.trigger(modal_change_password);
+    function handleSubmitChangePassword() {
+        if (confirm(`Change the password for game "${game_name}"?`)) {
+            change_password_game_form.submit();
+        }
     }
 
-    let modal_change_name: ModalSettings = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Change name for ${game_name} Game`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? change_name_form.submit() : null,
-    });
-    
-
-    function handleSubmitChangeName(){
-        modalStore.trigger(modal_change_name);
+    function handleSubmitChangeName() {
+        if (confirm(`Change your player name for game "${game_name}"?`)) {
+            change_name_form.submit();
+        }
     }
 
-    let modal_delete_user: ModalSettings = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Remove ${delete_user_name} from the game ?`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? delete_user_form.submit() : null,
-    }); 
-    
-    
-    
-    async function handleSubmitDeleteUser(player_name: string, index: number){
-        delete_user_name = player_name;
-        delete_user_form = cmps[index];
-        await tick();
-        modalStore.trigger(modal_delete_user);
+    function handleSubmitDeleteUser(player_name: string, index: number) {
+        if (!confirm(`Remove ${player_name} from the game?`)) {
+            return;
+        }
+
+        const form = cmps[index];
+        form?.submit();
     }
 
-
-    let modal_reset_game_state: ModalSettings = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Reset Game State ?`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? reset_game_form.submit() : null,
-    });
-    
-    
-    function handleSubmitResetGameState(){
-        modalStore.trigger(modal_reset_game_state);
+    function handleSubmitResetGameState() {
+        if (confirm(`Reset the game state for "${game_name}"?`)) {
+            reset_game_form.submit();
+        }
     }
 
-    let modal_shuffle_game_state: ModalSettings = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Shuffle Game State ?`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? shuffle_game_form.submit() : null,
-    });
-    
-    
-    function handleSubmitShuffleGameState(){
-        modalStore.trigger(modal_shuffle_game_state);
+    function handleSubmitShuffleGameState() {
+        if (confirm(`Shuffle the game state for "${game_name}"?`)) {
+            shuffle_game_form.submit();
+        }
     }
 
-    let modal_quit_game: ModalSettings = $derived({
-        type: 'confirm',
-        // Data
-        title: `Confirm Shuffle Game State ?`,
-        body: 'Are you sure you wish to proceed?',
-        // TRUE if confirm pressed, FALSE if cancel pressed
-        response: (r: boolean) => r ? quit_game_form.submit() : null,
-    });
-    
-    
-    function handleSubmitQuitGame(){
-        modalStore.trigger(modal_quit_game);
+    function handleSubmitQuitGame() {
+        if (confirm('Quit the game?')) {
+            quit_game_form.submit();
+        }
     }
 </script>
 
@@ -238,16 +170,8 @@
                                 Add user
                             </button>
                         </form>
-                        <form method="POST" action="?/add_summer_games_player" class="flex flex-col items-center justify-center mx-2 mt-5">
-                            <button
-                            type="submit"
-                            class="btn mt-2 grow max-w-2xl hover:border-blue-500 hover:border-solid hover:bg-slate-700 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-blue-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"
-                            >
-                            Add Summer Games Players
-                        </button>
-                    </form>
                     <hr class="h-2 mx-5 my-4 bg-gray-500 rounded md:my-10">
-                    <form bind:this={reset_game_form} onsubmit={preventDefault(() => handleSubmitResetGameState())} method="POST" action="?/reset_game_state" class="flex flex-col items-center justify-center mx-2 my-2">
+                    <form bind:this={reset_game_form} onsubmit={preventDefault(handleSubmitResetGameState)} method="POST" action="?/reset_game_state" class="flex flex-col items-center justify-center mx-2 my-2">
                         <button
                             type="submit"
                             class="btn mt-2 grow max-w-2xl hover:border-red-500 hover:border-solid hover:bg-slate-700 hover:text-red-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-red-300 text-xl leading-6 text-slate-900 font-medium py-3 px-8 bg-slate-500"

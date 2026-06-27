@@ -1,96 +1,212 @@
 <script lang="ts">
-	import P5 from 'p5-svelte';
   interface Props {
     data: any;
   }
 
+  interface LoopEntry {
+    is_dead?: boolean;
+    target_name?: string;
+    mission?: string;
+    killed_by_id?: string;
+    [key: string]: any;
+  }
+
+  interface PlayerInfo {
+    user_id: string;
+    name?: string;
+  }
+
   let { data }: Props = $props();
-    
-    let game_id = $derived(data.game.id);
-    let nb_alive_players = $derived(data.game.state['#alive_players']);
-    let alive_players_id = $derived(Object.keys(data.game.state.loop))
-    let loop = $derived(data.game.state.loop);
-    let fontSize = 18;
-    let text_fact = 1.1;
-    let r_fact = 2/5;
-    let text_position = [];
 
-	const sketch = (p5) => {
-		p5.setup = () => {
-			p5.createCanvas(p5.windowWidth, p5.windowHeight-100);
-            
-            // Set text chasracteristics
-            p5.textSize(fontSize);
-            p5.textAlign(p5.CENTER, p5.CENTER);
+  const game_id = data.game?.id ?? '';
+  const game_title = data.game?.name ?? data.game?.game_name ?? 'Game';
+  const state = data.game?.state ?? {};
+  const loop = state.loop ?? {};
+  const playerMap = (data.players ?? []).reduce((acc: Record<string, string>, player: PlayerInfo) => {
+    if (player.user_id && player.name) {
+      acc[player.user_id] = player.name;
+    }
+    return acc;
+  }, {});
 
-            let r = p5.min(p5.width*r_fact, p5.height*r_fact);
-            polygon(p5.width/2, p5.height/2, r)
-            draw_names();
-			p5.ellipse(p5.width / 2, p5.height / 2, 20, 20);
-		};
+  const players = Object.entries(loop).map(([user_id, entry]) => ({
+    user_id,
+    ...(entry as LoopEntry),
+  })) as Array<LoopEntry & { user_id: string }>;
 
-        function polygon(x, y, radius, npoints = nb_alive_players) {
-            let angle = p5.TWO_PI / npoints;
-            p5.beginShape();
-            for (let a = 0; a < p5.TWO_PI; a += angle) {
-                let sx = x + p5.cos(a) * radius;
-                let sy = y + p5.sin(a) * radius;
-                p5.vertex(sx, sy);
-                text_position.push({x: x + p5.cos(a) * radius * text_fact, y: y + p5.sin(a) * radius * text_fact});
+  const alivePlayers = players.filter((player) => !player.is_dead);
+  const deadPlayers = players.filter((player) => player.is_dead);
+  const currentPlayer = data.user ? players.find((player) => player.user_id === data.user.id) : null;
+  const isDead = currentPlayer?.is_dead ?? false;
+  const currentMission = currentPlayer?.mission ?? 'No mission assigned yet.';
+  const currentTarget = currentPlayer?.target_name ?? 'Unknown';
+  const aliveCount = state['#alive_players'] ?? alivePlayers.length;
+  const totalCount = state['#players'] ?? players.length;
 
-                // let sx2 = x + p5.cos(a+angle) * radius;
-                // let sy2 = y + p5.sin(a+angle) * radius;
+  function getParticipantName(user_id: string) {
+    return playerMap[user_id] ?? 'Participant';
+  }
 
-                // let pos = p5.createVector(10, 0);
-                // let dir = p5.createVector(sx2-sx, sy2-sy);
-                // arrowHead(pos, dir);
-            }
-            p5.endShape(p5.CLOSE);
-        }
+  function displayKillerLabel(killedById?: string) {
+    if (!killedById) {
+      return 'Unknown';
+    }
 
-        function get_next_player(current_player_id: string){
-            let next_player_id = loop[current_player_id].target_id;
-            let next_player = loop[next_player_id];
-            return {
-                current_player_id: next_player_id,
-                current_player: next_player
-            }
-        }
+    if (killedById === 'Quit Game') {
+      return 'Quit Game';
+    }
 
-        function draw_names(){
-            let n = nb_alive_players;
-            
-            let first_player_id = alive_players_id[0];
-            let current_player_id = first_player_id;
-            let current_player = loop[current_player_id];
-            let k = 0;
-            
-            while (n > 0){
-                p5.fill('red');
-                p5.text(current_player.target_name, text_position[k].x, text_position[k].y);
-                p5.fill('green');
-                ({current_player_id, current_player} = get_next_player(current_player_id));
-                p5.textSize(fontSize-12);
-                p5.text(current_player.mission, text_position[k].x, text_position[k].y + 15);
-                n-=1;
-                k+=1;
-            }
-        }
-	};
+    return playerMap[killedById] ?? 'another participant';
+  }
 </script>
 
-<header class="flex bg-white space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6 items-center justify-center">
-    <h2 class="font-semibold text-3xl text-slate-900">
-        Game State
-    </h2>
-    <div class="flex justify-end grow">
-      <a  
-      href="/game/{game_id}"
-      class="btn variant-filled mx-10">
-          Return
-      </a>
+<section class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  <header class="flex flex-col gap-4 rounded-[2rem] border border-slate-700/40 bg-slate-950/90 p-6 shadow-xl shadow-slate-950/20 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="text-sm uppercase tracking-[0.35em] text-cyan-300/70">Game State</p>
+      <h1 class="mt-2 text-4xl font-semibold text-white">{game_title}</h1>
+      <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+        Visualize the current status of the match, including who is alive and who has been eliminated.
+      </p>
     </div>
+
+    <a href={`/game/${game_id}`} class="inline-flex items-center justify-center rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
+      Return to game
+    </a>
   </header>
-<div class="flex justify-center">
-    <P5 sketch={sketch} />
-</div>
+
+  <div class="mt-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+    <div class="space-y-6">
+      <div class="rounded-[2rem] border border-slate-700/40 bg-slate-900/90 p-6 shadow-xl shadow-slate-950/20">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm uppercase tracking-[0.3em] text-slate-400">Summary</p>
+            <h2 class="mt-3 text-3xl font-semibold text-white">Match overview</h2>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-3">
+            <div class="rounded-3xl bg-slate-950/80 p-4 text-center">
+              <p class="text-sm uppercase tracking-[0.3em] text-slate-400">Total players</p>
+              <p class="mt-3 text-3xl font-semibold text-white">{totalCount}</p>
+            </div>
+            <div class="rounded-3xl bg-slate-950/80 p-4 text-center">
+              <p class="text-sm uppercase tracking-[0.3em] text-slate-400">Alive</p>
+              <p class="mt-3 text-3xl font-semibold text-emerald-300">{aliveCount}</p>
+            </div>
+            <div class="rounded-3xl bg-slate-950/80 p-4 text-center">
+              <p class="text-sm uppercase tracking-[0.3em] text-slate-400">Eliminated</p>
+              <p class="mt-3 text-3xl font-semibold text-rose-300">{deadPlayers.length}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rounded-[2rem] border border-slate-700/40 bg-slate-900/90 p-6 shadow-xl shadow-slate-950/20">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-sm uppercase tracking-[0.3em] text-slate-400">Your state</p>
+            <h2 class="mt-2 text-2xl font-semibold text-white">{isDead ? 'Eliminated' : 'Still alive'}</h2>
+          </div>
+          <span class={`rounded-full px-3 py-1 text-xs font-semibold ${isDead ? 'bg-rose-500/20 text-rose-200' : 'bg-emerald-500/20 text-emerald-200'}`}>
+            {isDead ? 'Dead' : 'Alive'}
+          </span>
+        </div>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-2">
+          <div class="rounded-[1.5rem] bg-slate-950/70 p-5">
+            <p class="text-sm uppercase tracking-[0.28em] text-slate-400">Target</p>
+            <p class="mt-3 text-lg font-semibold text-white">{currentTarget}</p>
+          </div>
+          <div class="rounded-[1.5rem] bg-slate-950/70 p-5">
+            <p class="text-sm uppercase tracking-[0.28em] text-slate-400">Mission</p>
+            <p class="mt-3 text-lg font-semibold text-white">{currentMission}</p>
+          </div>
+        </div>
+
+        {#if isDead}
+          <div class="mt-6 rounded-[1.5rem] border border-rose-500/20 bg-rose-500/10 p-5">
+            <p class="text-sm uppercase tracking-[0.28em] text-rose-200">Eliminated player guidance</p>
+            <p class="mt-3 text-slate-300">
+              You have been eliminated. Follow the ongoing state of the game, but do not share any details with living players.
+            </p>
+            <p class="mt-3 text-sm text-slate-400">Killed by: <span class="font-semibold text-white">{displayKillerLabel(currentPlayer?.killed_by_id)}</span></p>
+          </div>
+        {/if}
+      </div>
+
+      <div class="rounded-[2rem] border border-slate-700/40 bg-slate-900/90 p-6 shadow-xl shadow-slate-950/20">
+        <h2 class="text-2xl font-semibold text-white">Player chain</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-400">Review the current mission assignments and targets for each participant.</p>
+
+        <div class="mt-6 space-y-4">
+          {#if alivePlayers.length > 0}
+            {#each alivePlayers as player}
+              <div class="rounded-[1.5rem] border border-slate-700/50 bg-slate-950/80 p-4">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="text-sm text-slate-400">Participant</p>
+                    <p class="mt-1 font-semibold text-white">{getParticipantName(player.user_id)}</p>
+                  </div>
+                  <span class={`rounded-full px-3 py-1 text-xs font-semibold ${player.is_dead ? 'bg-rose-500/20 text-rose-200' : 'bg-emerald-500/20 text-emerald-200'}`}>
+                    {player.is_dead ? 'Dead' : 'Alive'}
+                  </span>
+                </div>
+                <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div class="rounded-2xl bg-slate-900/80 p-4">
+                    <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Target</p>
+                    <p class="mt-2 text-sm font-semibold text-white">{player.target_name ?? 'Unknown'}</p>
+                  </div>
+                  <div class="rounded-2xl bg-slate-900/80 p-4">
+                    <p class="text-xs uppercase tracking-[0.28em] text-slate-400">Mission</p>
+                    <p class="mt-2 text-sm font-semibold text-white">{player.mission ?? 'No mission'}</p>
+                  </div>
+                </div>
+              </div>
+            {/each}
+          {:else}
+            <p class="text-sm text-slate-400">No living participants to display.</p>
+          {/if}
+        </div>
+      </div>
+    </div>
+
+    <aside class="space-y-6">
+      <div class="rounded-[2rem] border border-slate-700/40 bg-slate-900/90 p-6 shadow-xl shadow-slate-950/20">
+        <h2 class="text-2xl font-semibold text-white">Alive players</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-400">Players still in the game.</p>
+
+        <div class="mt-6 space-y-3">
+          {#each alivePlayers as player}
+            <div class="rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-4">
+              <div class="flex items-center justify-between gap-3">
+                <p class="font-semibold text-white">{getParticipantName(player.user_id)}</p>
+                <span class="rounded-full bg-emerald-500/10 px-2 py-1 text-xs text-emerald-200">Alive</span>
+              </div>
+              <p class="mt-2 text-sm text-slate-300">Target: {player.target_name ?? 'Unknown'}</p>
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <div class="rounded-[2rem] border border-slate-700/40 bg-slate-900/90 p-6 shadow-xl shadow-slate-950/20">
+        <h2 class="text-2xl font-semibold text-white">Eliminated players</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-400">Players who have been removed from the loop.</p>
+
+        <div class="mt-6 space-y-3">
+          {#if deadPlayers.length > 0}
+            {#each deadPlayers as player}
+              <div class="rounded-3xl border border-rose-500/20 bg-rose-500/10 p-4">
+                <div class="flex items-center justify-between gap-3">
+                  <p class="font-semibold text-white">{getParticipantName(player.user_id)}</p>
+                  <span class="rounded-full bg-rose-500/10 px-2 py-1 text-xs text-rose-200">Dead</span>
+                </div>
+                <p class="mt-2 text-sm text-slate-300">Killed by: {displayKillerLabel(player.killed_by_id)}</p>
+              </div>
+            {/each}
+          {:else}
+            <p class="text-sm text-slate-400">No eliminations have occurred yet.</p>
+          {/if}
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>

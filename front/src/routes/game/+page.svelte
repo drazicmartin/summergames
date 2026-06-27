@@ -6,98 +6,120 @@
   }
 
   let { data }: Props = $props();
-
   let admin_games = $state(data.created_games || []);
   let players = $state(data.players || []);
 </script>
 
-<section class="divide-y">
-  <header class="space-y-4 p-4 sm:px-8 sm:py-6 lg:p-4 xl:px-8 xl:py-6 ">
-    <div class="flex items-center justify-between">
-      <h2 class="font-bold text-3xl text-slate-100">Games</h2>
-      <a href="/game/new" class="btn variant-filled">
-        <svg width="20" height="20" fill="currentColor" class="mr-2" aria-hidden="true">
-          <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
-        </svg>
-        New
-      </a>
-      <a
-            href="/"
-            class="btn variant-filled"
-        >
-            Return
+<section class="mx-auto max-w-6xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
+  <header class="rounded-[2rem] border border-slate-700/50 bg-slate-950/90 p-8 shadow-[0_35px_80px_-40px_rgba(15,23,42,0.9)] ring-1 ring-slate-700/60">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <div class="space-y-4">
+        <p class="text-sm uppercase tracking-[0.35em] text-cyan-300/80">Your games dashboard</p>
+        <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">Manage your matches</h1>
+        <p class="max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
+          View games you created, join active sessions, and keep track of who is playing.
+          Select a game to continue or start a new match now.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a href="/game/new" class="btn variant-filled inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold">
+          <span>New Game</span>
         </a>
+        <a href="/" class="btn variant-outlined inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold">
+          Return
+        </a>
+      </div>
     </div>
   </header>
-  {#if (admin_games.length != 0)}
-    <div>
-      <h2 class="text-center bg-orange-900">Admin Games</h2>
-      <ul class="p-4 sm:px-8 sm:pt-6 sm:pb-8 lg:p-4 xl:px-8 xl:pt-6 xl:pb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 text-sm leading-6">
+
+  {#if admin_games.length > 0}
+    <section class="space-y-4">
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold text-white">Admin Games</h2>
+          <p class="text-sm text-slate-400">Games you created and can manage directly.</p>
+        </div>
+        <span class="inline-flex rounded-full bg-cyan-500/10 px-3 py-1 text-xs uppercase tracking-[0.35em] text-cyan-200">
+          Creator
+        </span>
+      </div>
+
+      <ul class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {#each admin_games as game (game.id)}
-          <li>
-            <a href="game/{game.id}" class="grow hover:border-blue-500 hover:border-solid hover:bg-slate-800 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-slate-300 text-sm leading-6 text-slate-900 font-medium py-3 px-8">
-              <div class="content">
-                <div class="content1">
-                  {game.name}
-                </div>
-                <div class="content2">
-                  <span class="dot" style:background-color={GetGameStatusColor(game)}></span>
-                </div>
+          <li class="group overflow-hidden rounded-[1.75rem] border border-slate-700/60 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20 transition hover:-translate-y-1 hover:border-cyan-500/40">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-sm uppercase tracking-[0.3em] text-slate-500">{game.name}</p>
+                <h3 class="mt-3 text-2xl font-semibold text-white">{game.name}</h3>
               </div>
+              <span class="inline-flex h-9 items-center rounded-full bg-slate-950/90 px-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-200">
+                {GetGameStatusColor(game) === 'green' ? 'Started' : GetGameStatusColor(game) === 'red' ? 'Finished' : 'Pending'}
+              </span>
+            </div>
+
+            <p class="mt-4 text-sm leading-6 text-slate-400">{game.description ?? 'No description available.'}</p>
+
+            <a href={`/game/${game.id}`} class="mt-6 inline-flex items-center justify-center rounded-full bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
+              View game
             </a>
           </li>
         {/each}
       </ul>
+    </section>
+  {/if}
+
+  {#if players.length > 0}
+    <section class="space-y-4">
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold text-white">Playing Games</h2>
+          <p class="text-sm text-slate-400">Games where you're participating as a player.</p>
+        </div>
+        <span class="inline-flex rounded-full bg-amber-500/10 px-3 py-1 text-xs uppercase tracking-[0.35em] text-amber-200">
+          Player
+        </span>
+      </div>
+
+      <ul class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {#each players as player}
+          {#if player.games}
+            <li class="group overflow-hidden rounded-[1.75rem] border border-slate-700/60 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20 transition hover:-translate-y-1 hover:border-slate-500/40">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="text-sm uppercase tracking-[0.3em] text-slate-500">{player.games.name}</p>
+                  <h3 class="mt-3 text-2xl font-semibold text-white">{player.games.name}</h3>
+                </div>
+                <span class="inline-flex h-9 items-center rounded-full bg-slate-950/90 px-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-200">
+                  {GetGameStatusColor(player.games) === 'green' ? 'Started' : GetGameStatusColor(player.games) === 'red' ? 'Finished' : 'Pending'}
+                </span>
+              </div>
+
+              <p class="mt-4 text-sm leading-6 text-slate-400">Joined as a player in this match.</p>
+
+              <a href={`/game/${player.games.id}`} class="mt-6 inline-flex items-center justify-center rounded-full bg-slate-200 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-300">
+                Open game
+              </a>
+            </li>
+          {/if}
+        {/each}
+      </ul>
+    </section>
+  {/if}
+
+  {#if admin_games.length === 0 && players.length === 0}
+    <div class="rounded-[1.75rem] border border-slate-700/60 bg-slate-900/80 p-10 text-center shadow-xl shadow-slate-950/20">
+      <h2 class="text-3xl font-semibold text-white">No games found</h2>
+      <p class="mt-3 text-sm leading-7 text-slate-400">Create a new game or ask a friend to invite you to a match.</p>
+      <a href="/game/new" class="mt-6 inline-flex items-center justify-center rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
+        Create your first game
+      </a>
     </div>
   {/if}
-  {#if (players.length != 0)}
-  <div>
-    <h2 class="text-center bg-orange-900">Playing Games</h2>
-    <ul class="p-4 sm:px-8 sm:pt-6 sm:pb-8 lg:p-4 xl:px-8 xl:pt-6 xl:pb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 text-sm leading-6">
-      {#each players as player}
-        {#if (player.games)}
-          <li>
-            <a href="game/{player.games.user_id}" class="grow hover:border-blue-500 hover:border-solid hover:bg-slate-800 hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-double border-slate-300 text-sm leading-6 text-slate-900 font-medium py-3 px-8">
-                <div class="content">
-                  <div class="content1">
-                    {player.games.name}
-                </div>
-                <div class="content2">
-                  <span class="dot" style:background-color={GetGameStatusColor(player.game)}></span>
-                </div>
-              </div>
-            </a>
-          </li>
-        {/if}
-      {/each}
-    </ul>
-  </div>
-  {/if}
 </section>
-  
+
 <style>
-  .dot {
-    height: 25px;
-    width: 25px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  .content {
-    display: flex;
-    width: inherit;
-  }
-
-  .content1 {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-  }
-
-  .content2 {
-    flex-grow: 0;
-    display: flex;
-    justify-content: center;
+  a:hover {
+    text-decoration: none;
   }
 </style>

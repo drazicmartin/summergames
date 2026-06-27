@@ -26,3 +26,11 @@ supabase db dump --db-url "postgres://postgres:your-super-secret-and-long-postgr
 Access supabase dashboard with:
 - user : `supabase`
 - password : `this_password_is_insecure_and_should_be_updated`
+
+#Change password via supabase dashboard
+```
+update auth.users
+set encrypted_password = crypt('new_password', gen_salt('bf')),
+    updated_at = now()
+where id = 'user_id';
+```

@@ -1,52 +1,82 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
-async function fetchGame(supabase: SupabaseClient, game_id: string){
-    let { data, error } = await supabase
-        .from("games")
-        .select()
-        .eq("id", game_id)
+async function fetchGame(supabase: SupabaseClient, game_id: string) {
+    const { data, error: fetchError } = await supabase
+        .from('games')
+        .select('*')
+        .eq('id', game_id)
         .single();
-    if (error) {
-        return error;
-    } else {
-        return data;
-    } 
+
+    if (fetchError) {
+        console.error('error fetching game', fetchError);
+        return null;
+    }
+
+    return data;
 };
 
 async function fetchSelfPlayer(supabase: SupabaseClient, user_id: string, game_id: string) {
-  let { data, error } = await supabase
-        .from("players")
-        .select()
-        .eq("game_id", game_id)
-        .eq("user_id", user_id)
+  const { data, error } = await supabase
+        .from('players')
+        .select('*')
+        .eq('game_id', game_id)
+        .eq('user_id', user_id)
         .single();
+
     if (error) {
-        return false;
-    } else {
-        return data;
+        return null;
     }
+
+    return data;
 }
 
-export const load = async ({ parent, params, locals: { supabase, safeGetSession} }) => {
-  let session = (await safeGetSession()).session;
+async function fetchGamePlayers(supabase: SupabaseClient, game_id: string) {
+  const { data, error } = await supabase
+        .from('players')
+        .select('user_id, name');
 
-  let game = await fetchGame(supabase, params.game_id)
+  if (error) {
+    console.error('error fetching game players', error);
+    return [];
+  }
+
+  return data ?? [];
+}
+
+export const load = async ({ parent, params, locals: { supabase, safeGetSession } }) => {
+  const session = (await safeGetSession()).session;
+
+  if (!session || !session.user) {
+    throw redirect(302, '/auth/login');
+  }
+
+  if (!params.game_id) {
+    throw error(400, 'Missing game id');
+  }
+
+  const game = await fetchGame(supabase, params.game_id);
+  if (!game) {
+    throw error(404, 'Game not found');
+  }
   
-  let self_player = await fetchSelfPlayer(supabase, session.user.id, params.game_id);
-  
-  let is_admin = session.user.id == game.user_id;
-  let kill_history = game.state?.loop[session.user.id]?.kill_history;
+  const self_player = await fetchSelfPlayer(supabase, session.user.id, params.game_id);
+  const players = await fetchGamePlayers(supabase, params.game_id);
+  const is_admin = session.user.id === game.user_id;
+  const kill_history = game.state?.loop?.[session.user.id]?.kill_history ?? [];
 
   if (!self_player && !is_admin) {
-    throw redirect(308, "/game");
+    throw redirect(308, '/game');
   }
+
+  console.log('Game data loaded:', game );
 
   return {
     user: session.user,
-    self_player: self_player,
+    self_player,
+    players,
     game,
-    is_admin: is_admin,
-    kill_history: kill_history,
+    is_admin,
+    kill_history,
   }
 }
